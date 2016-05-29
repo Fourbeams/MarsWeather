@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class ServiceHelper {
 
     private final static ServiceHelper INSTANCE = new ServiceHelper();
-    private Context context = App.getContext();
+    private static Context mContext;
     private HashMap<String, Object> runningServicesPool = new HashMap<> ();
 
     public enum task{
@@ -27,6 +27,10 @@ public class ServiceHelper {
 
     public static ServiceHelper getInstance() {
         return INSTANCE;
+    }
+
+    public static void setContext (Context context) {
+        mContext = context;
     }
 
     public void runService (ServiceHelper.task task){
@@ -45,9 +49,9 @@ public class ServiceHelper {
         String key = task.GET_NEW_WEATHER_DATA_FROM_SERVER.toString();
         if (!runningServicesPool.containsKey(key)) {
             runningServicesPool.put(key, null );
-            Intent startServiceIntent = new Intent(context, GetService.class);
+            Intent startServiceIntent = new Intent(mContext, GetService.class);
             startServiceIntent.putExtra("TASK", key);
-            context.startService(startServiceIntent);
+            mContext.startService(startServiceIntent);
         }
     }
 }

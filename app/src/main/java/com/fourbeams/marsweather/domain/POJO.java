@@ -2,18 +2,10 @@ package com.fourbeams.marsweather.domain;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
 
-import java.io.IOException;
+public class POJO {
 
-public class RESTClient {
-
-    public RESTClient() throws IOException {}
-
-    /*public class ReportResponse{
+    public class ReportResponse{
 
         @SerializedName("report")
         @Expose
@@ -26,7 +18,6 @@ public class RESTClient {
         public void setReport(Report report) {
             this.report = report;
         }
-
     }
 
     public class Report {
@@ -206,18 +197,6 @@ public class RESTClient {
         public void setSunset(String sunset) {
             this.sunset = sunset;
         }
-    }*/
-
-    public interface MarsWeatherService {
-        @GET("v1/latest/?format=json")
-        Call<POJO.ReportResponse> getJSON(
-                //@Path("owner") String owner,
-                //@Path("repo") String repo
-                );
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://marsweather.ingenology.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
     }
+
 }

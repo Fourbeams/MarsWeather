@@ -12,8 +12,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
-import com.fourbeams.marsweather.domain.App;
 
 import java.util.HashMap;
 
@@ -31,25 +29,26 @@ public class MarsWeatherContentProvider extends ContentProvider {
     public static final String MAX_TEMP_C = "max_temp_c";
 
     static final int TEMPERATURE = 1;
-    static final int TEMPERATURE_TERRESTRIAL_DATE = 2;
+    //static final int TEMPERATURE_TERRESTRIAL_DATE = 2;
 
     static final UriMatcher uriMatcher;
     static{
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(PROVIDER_NAME, "temperature", TEMPERATURE);
-        uriMatcher.addURI(PROVIDER_NAME, "temperature/#", TEMPERATURE_TERRESTRIAL_DATE);
+        //uriMatcher.addURI(PROVIDER_NAME, "temperature/#", TEMPERATURE_TERRESTRIAL_DATE);
     }
 
     private SQLiteDatabase db;
     static final String DATABASE_NAME = "MarsWeatherBD";
     static final String TABLE_NAME = "temperature";
-    static final int DATABASE_VERSION = 1;
+    static final int DATABASE_VERSION = 3;
     static final String CREATE_DB_TABLE =
             " CREATE TABLE " + TABLE_NAME +
-                    " (terrestrial_date DATE PRIMARY KEY, " +
+                    " (terrestrial_date STRING, " +
                     " min_temp_c DOUBLE NOT NULL, " +
                     " max_temp_c DOUBLE NOT NULL); ";
 
+    //static final String CREATE_DB_TABLE = "DROP TABLE " + TABLE_NAME;
     private static class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper(Context context){
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -69,7 +68,7 @@ public class MarsWeatherContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        Context context = App.getContext();
+        Context context = getContext();
         DatabaseHelper dbHelper = new DatabaseHelper(context);
         db = dbHelper.getWritableDatabase();
         return db != null;
@@ -84,9 +83,9 @@ public class MarsWeatherContentProvider extends ContentProvider {
             case TEMPERATURE:
                 qb.setProjectionMap(TEMPERATURE_PROJECTION_MAP);
                 break;
-            case TEMPERATURE_TERRESTRIAL_DATE:
-                qb.appendWhere(TERRESTRIAL_DATE + "=" + uri.getPathSegments().get(1));
-                break;
+            //case TEMPERATURE_TERRESTRIAL_DATE:
+            //    qb.appendWhere(TERRESTRIAL_DATE + "=" + uri.getPathSegments().get(1));
+            //    break;
             default:
                 throw new IllegalArgumentException("Unknown URI" + uri);
         }
@@ -94,7 +93,7 @@ public class MarsWeatherContentProvider extends ContentProvider {
         /**
          * register to watch a content URI for changes
          */
-        c.setNotificationUri(App.getContext().getContentResolver(), uri);
+        c.setNotificationUri(getContext().getContentResolver(), uri);
         return c;
     }
 
@@ -111,8 +110,8 @@ public class MarsWeatherContentProvider extends ContentProvider {
             /**
              * Get a particular student
              */
-            case TEMPERATURE_TERRESTRIAL_DATE:
-                return "vnd.android.cursor.item/vnd.com.fourbeams.marsweather.persistence.temperature";
+            //case TEMPERATURE_TERRESTRIAL_DATE:
+            //    return "vnd.android.cursor.item/vnd.com.fourbeams.marsweather.persistence.temperature";
 
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
@@ -134,7 +133,7 @@ public class MarsWeatherContentProvider extends ContentProvider {
         if (rowID > 0)
         {
             Uri _uri = ContentUris.withAppendedId(CONTENT_URI, rowID);
-            App.getContext().getContentResolver().notifyChange(_uri, null);
+            getContext().getContentResolver().notifyChange(_uri, null);
             return _uri;
         }
 
@@ -150,16 +149,16 @@ public class MarsWeatherContentProvider extends ContentProvider {
                 count = db.delete(TABLE_NAME, s, strings);
                 break;
 
-            case TEMPERATURE_TERRESTRIAL_DATE:
-                String ter_Date = uri.getPathSegments().get(1);
-                count = db.delete(TABLE_NAME, TERRESTRIAL_DATE +  " = " + ter_Date +
-                        (!TextUtils.isEmpty(s) ? " AND (" + s + ')' : ""), strings);
-                break;
+            //case TEMPERATURE_TERRESTRIAL_DATE:
+            //    String ter_Date = uri.getPathSegments().get(1);
+            //    count = db.delete(TABLE_NAME, TERRESTRIAL_DATE +  " = " + ter_Date +
+            //            (!TextUtils.isEmpty(s) ? " AND (" + s + ')' : ""), strings);
+            //    break;
 
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
-        App.getContext().getContentResolver().notifyChange(uri, null);
+       getContext().getContentResolver().notifyChange(uri, null);
         return count;
     }
 
@@ -172,15 +171,15 @@ public class MarsWeatherContentProvider extends ContentProvider {
                 count = db.update(TABLE_NAME, contentValues, s, strings);
                 break;
 
-            case TEMPERATURE_TERRESTRIAL_DATE:
-                count = db.update(TABLE_NAME, contentValues, TERRESTRIAL_DATE + " = " + uri.getPathSegments().get(1) +
-                        (!TextUtils.isEmpty(s) ? " AND (" +s + ')' : ""), strings);
-                break;
+            //case TEMPERATURE_TERRESTRIAL_DATE:
+            //    count = db.update(TABLE_NAME, contentValues, TERRESTRIAL_DATE + " = " + uri.getPathSegments().get(1) +
+            //            (!TextUtils.isEmpty(s) ? " AND (" +s + ')' : ""), strings);
+            //    break;
 
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri );
         }
-        App.getContext().getContentResolver().notifyChange(uri, null);
+        getContext().getContentResolver().notifyChange(uri, null);
         return count;
     }
 }

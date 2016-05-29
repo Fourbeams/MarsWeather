@@ -12,7 +12,7 @@ public class GetService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         String task = intent.getStringExtra("TASK");
-        new Processor().startGetProcessor(task);
+        new Processor(getApplicationContext()).startGetProcessor(task);
     }
 
     @Override

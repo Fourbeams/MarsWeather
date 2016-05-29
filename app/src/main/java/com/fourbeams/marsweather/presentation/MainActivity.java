@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 import com.fourbeams.marsweather.R;
-import com.fourbeams.marsweather.domain.App;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
 import com.fourbeams.marsweather.domain.ServiceHelper;
 
@@ -26,13 +25,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getLoaderManager().initLoader(TEMPERATURE_LOADER, null, this);
+
+        //getLoaderManager().getLoader(TEMPERATURE_LOADER).forceLoad();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        ServiceHelper.setContext(getApplicationContext());
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ServiceHelper.getInstance().runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
+                //System.out.print("Updating Mars weather data from server ...");
                 Snackbar.make(view, "Updating Mars weather data from server ...", Snackbar.LENGTH_SHORT)
                         .show();
+
             }
         });
     }
@@ -68,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(App.getContext(), data, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), data, Toast.LENGTH_LONG).show();
                     }
                 });
             }while(cursor.moveToNext());
@@ -78,5 +83,4 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader loader) {}
-
 }
