@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.fourbeams.marsweather.R;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
@@ -25,9 +26,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getLoaderManager().initLoader(TEMPERATURE_LOADER, null, this);
-
-        //getLoaderManager().getLoader(TEMPERATURE_LOADER).forceLoad();
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         ServiceHelper.setContext(getApplicationContext());
         fab.setOnClickListener(new View.OnClickListener() {
@@ -67,13 +65,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader loader, Object o) {
         Cursor cursor = (Cursor) o;
-        if (cursor.moveToFirst()){
+        if (cursor.moveToLast()){
             do{
-                final String data = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.TERRESTRIAL_DATE));
+                final String ter_date = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.TERRESTRIAL_DATE));
+                final String min_temp = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.MIN_TEMP_C));
+                final String max_temp = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.MAX_TEMP_C));
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), data, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), data, Toast.LENGTH_LONG).show();
+                        TextView terrestrial_date = (TextView)findViewById(R.id.terrestrial_date);
+                        TextView min_temp_c = (TextView)findViewById(R.id.min_temp_c);
+                        TextView max_temp_c = (TextView)findViewById(R.id.max_temp_c);
+                        terrestrial_date.setText(ter_date);
+                        min_temp_c.setText(min_temp);
+                        max_temp_c.setText(max_temp);
                     }
                 });
             }while(cursor.moveToNext());
