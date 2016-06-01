@@ -25,11 +25,11 @@
 
     <TextView
             android:id="@+id/terrestrial_date"
-            android:text="ter_d"
+            android:text="data is updating ..."
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="50dp"/>
-    <TextView
+            android:textSize="25sp"/>
+   <!-- <TextView
             android:id="@+id/min_temp_c"
             android:text="min"
             android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
             android:text="max"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="50dp"/>
+            android:textSize="50dp"/>-->
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

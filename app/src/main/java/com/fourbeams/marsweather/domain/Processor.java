@@ -2,9 +2,8 @@ package com.fourbeams.marsweather.domain;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.Toast;
+import android.database.Cursor;
+import android.net.Uri;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
 import retrofit2.Call;
 
@@ -12,10 +11,9 @@ import java.io.IOException;
 
 import static com.fourbeams.marsweather.domain.RESTClient.MarsWeatherService.retrofit;
 
-
 public class Processor {
 
-    Context context;
+    private Context context;
 
     public Processor(Context context) {
         this.context = context;
@@ -23,36 +21,45 @@ public class Processor {
 
     public void startGetProcessor(String task){
         if (task.equals (ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER.toString())){
-                try {
-                    getNewWeatherDataFromServer();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    // TODO don't forget to remove
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(context, "error reading data from REST", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
+            try {
+                getNewWeatherData();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void getNewWeatherDataFromServer() throws IOException {
+    private void getNewWeatherData() throws IOException {
         RESTClient.MarsWeatherService marsWeatherService = retrofit.create(RESTClient.MarsWeatherService.class);
-        // getting data from dematerialized JSON stored in Call object, type of returned object defined by generics
+        // getting data from JSON, type of returned object defined in generic
         final Call<POJO.ReportResponse> call = marsWeatherService.getJSON();
         POJO.ReportResponse report = call.execute().body();
-        String terrestrialDate = report.getReport().getTerrestrialDate();
-        double minTemp = report.getReport().getMinTemp();
-        double maxTemp = report.getReport().getMaxTemp();
-        // save result to contentProvider through contentResolver
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MarsWeatherContentProvider.TERRESTRIAL_DATE, terrestrialDate);
-        contentValues.put(MarsWeatherContentProvider.MIN_TEMP_C, minTemp);
-        contentValues.put(MarsWeatherContentProvider.MAX_TEMP_C, maxTemp);
-        // loader notified at ContentProvider's Update/Insert method by invoking
-        // getContext().getContentResolver().notifyChange(_uri, null)
-        context.getContentResolver().insert(MarsWeatherContentProvider.CONTENT_URI, contentValues);
+        String terrestrialDate = report.getReport().getTerrestrialDate(); // date from server
+
+        // obtaining date from provider
+        String latestDateInContentProvider = "";
+        String URL = "content://" + MarsWeatherContentProvider.PROVIDER_NAME + "/temperature/last_date";
+        Cursor cursor = context.getContentResolver().query(Uri.parse(URL), MarsWeatherContentProvider.TEMPERATURE_PROJECTION, null, null, null);
+        if (cursor.moveToLast()){
+            latestDateInContentProvider = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.TERRESTRIAL_DATE));
+        }
+        cursor.close();
+
+        // if date from server != date in provider, then insert new row
+        if (!terrestrialDate.equals(latestDateInContentProvider)){
+            double minTemp = report.getReport().getMinTemp();
+            double maxTemp = report.getReport().getMaxTemp();
+            // save result to contentProvider through contentResolver
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MarsWeatherContentProvider.TERRESTRIAL_DATE, terrestrialDate);
+            contentValues.put(MarsWeatherContentProvider.MIN_TEMP_C, minTemp);
+            contentValues.put(MarsWeatherContentProvider.MAX_TEMP_C, maxTemp);
+            context.getContentResolver().insert(MarsWeatherContentProvider.CONTENT_URI, contentValues);
+        }
+/*      ContentValues contentValues = new ContentValues();
+        contentValues.put(MarsWeatherContentProvider.TERRESTRIAL_DATE, "0000-00-00");
+        contentValues.put(MarsWeatherContentProvider.MIN_TEMP_C, -11);
+        contentValues.put(MarsWeatherContentProvider.MAX_TEMP_C, 11);
+        context.getContentResolver().insert(MarsWeatherContentProvider.CONTENT_URI, contentValues);*/
     }
 }
