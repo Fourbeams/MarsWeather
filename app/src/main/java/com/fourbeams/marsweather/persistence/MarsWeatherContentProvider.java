@@ -151,7 +151,6 @@ public class MarsWeatherContentProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
         int count = 0;
-
         switch (uriMatcher.match(uri)){
             case TEMPERATURE:
                 count = db.update(TABLE_NAME, contentValues, s, strings);

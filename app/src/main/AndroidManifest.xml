@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          android:installLocation="internalOnly"
           package="com.fourbeams.marsweather">
     <uses-permission
             android:name="android.permission.INTERNET"/>
@@ -24,7 +25,13 @@
                   android:authorities="com.fourbeams.marsweather.persistence.MarsWeatherContentProvider">
         </provider>
 
-
+        <receiver android:name="MyWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"></action>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                       android:resource="@xml/mywidget_info"></meta-data>
+        </receiver>
 
         <service
                 android:name="com.fourbeams.marsweather.domain.GetService"

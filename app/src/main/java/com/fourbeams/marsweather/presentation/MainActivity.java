@@ -1,7 +1,9 @@
 package com.fourbeams.marsweather.presentation;
 
 import android.app.LoaderManager;
+import android.appwidget.AppWidgetManager;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.fourbeams.marsweather.MyWidgetProvider;
 import com.fourbeams.marsweather.R;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
 import com.fourbeams.marsweather.domain.ServiceHelper;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 ServiceHelper.getInstance().runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
             }
         });
+        new MyWidgetProvider();
     }
 
     private class MarsWeatherContentProviderObserver extends ContentObserver {
