@@ -1,9 +1,7 @@
 package com.fourbeams.marsweather.presentation;
 
 import android.app.LoaderManager;
-import android.appwidget.AppWidgetManager;
 import android.content.CursorLoader;
-import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,10 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.fourbeams.marsweather.MyWidgetProvider;
 import com.fourbeams.marsweather.R;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
 import com.fourbeams.marsweather.domain.ServiceHelper;
+import com.fourbeams.marsweather.domain.MyWidgetProvider;
 
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks{
@@ -34,9 +32,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ServiceHelper.setContext(getApplicationContext());
         getLoaderManager().initLoader(TEMPERATURE_LOADER, null, this);
         getContentResolver().registerContentObserver(
-            MarsWeatherContentProvider.CONTENT_URI, // observed URI
-            true,
-            new MarsWeatherContentProviderObserver(new Handler()));
+                MarsWeatherContentProvider.CONTENT_URI, // observed URI
+                true,
+                new MarsWeatherContentProviderObserver(new Handler()));
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

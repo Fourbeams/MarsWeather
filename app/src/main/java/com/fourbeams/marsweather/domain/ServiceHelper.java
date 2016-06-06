@@ -33,6 +33,10 @@ public class ServiceHelper {
         mContext = context;
     }
 
+    public static boolean isContextNull () {
+        return (mContext == null);
+    }
+
     public void runService (ServiceHelper.task task){
         switch (task){
             case GET_NEW_WEATHER_DATA_FROM_SERVER: startGetService(task);
