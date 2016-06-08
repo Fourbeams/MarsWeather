@@ -15,6 +15,9 @@ public class Processor {
 
     private Context context;
 
+    //TODO - remove
+    private static int counter;
+
     public Processor(Context context) {
         this.context = context;
     }
@@ -36,6 +39,16 @@ public class Processor {
         POJO.ReportResponse report = call.execute().body();
         String terrestrialDate = report.getReport().getTerrestrialDate(); // date from server
 
+        //TODO - remove / in use for testing
+        /*try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+        counter++;
+        terrestrialDate = counter + "";
+        //TODO - remove / in use for testing
+
         // obtaining date from provider
         String latestDateInContentProvider = "";
         String URL = "content://" + MarsWeatherContentProvider.PROVIDER_NAME + "/temperature/last_date";
@@ -56,10 +69,5 @@ public class Processor {
             contentValues.put(MarsWeatherContentProvider.MAX_TEMP_C, maxTemp);
             context.getContentResolver().insert(MarsWeatherContentProvider.CONTENT_URI, contentValues);
         }
-/*      ContentValues contentValues = new ContentValues();
-        contentValues.put(MarsWeatherContentProvider.TERRESTRIAL_DATE, "0000-00-00");
-        contentValues.put(MarsWeatherContentProvider.MIN_TEMP_C, -11);
-        contentValues.put(MarsWeatherContentProvider.MAX_TEMP_C, 11);
-        context.getContentResolver().insert(MarsWeatherContentProvider.CONTENT_URI, contentValues);*/
     }
 }

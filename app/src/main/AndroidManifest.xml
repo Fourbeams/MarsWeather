@@ -28,16 +28,17 @@
         <receiver android:name=".domain.MyWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"></action>
+                <action android:name="com.fourbeams.marsweather.intent.action.UPDATE_TEMPERATURE_BUTTON_PRESSED"></action>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
                        android:resource="@xml/mywidget_info"></meta-data>
         </receiver>
 
-        <receiver android:name=".presentation.MyWidgetIntentReceiver">
+       <!-- <receiver android:name=".presentation.MyWidgetIntentReceiver">
             <intent-filter>
-                <action android:name="com.fourbeams.marsweather.intent.action.UPDATE_TEMPERATURE"></action>
+                <action android:name="com.fourbeams.marsweather.intent.action.UPDATE_TEMPERATURE_BUTTON_PRESSED"></action>
             </intent-filter>
-        </receiver>
+        </receiver>-->
 
         <service
                 android:name="com.fourbeams.marsweather.domain.GetService"
