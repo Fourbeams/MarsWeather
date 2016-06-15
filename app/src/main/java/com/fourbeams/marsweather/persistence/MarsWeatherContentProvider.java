@@ -1,10 +1,6 @@
 package com.fourbeams.marsweather.persistence;
 
-import android.content.ContentProvider;
-import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.UriMatcher;
-import android.content.Context;
+import android.content.*;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import com.fourbeams.marsweather.domain.MyWidgetProvider;
 
 public class MarsWeatherContentProvider extends ContentProvider {
 
@@ -46,13 +43,14 @@ public class MarsWeatherContentProvider extends ContentProvider {
     private SQLiteDatabase db;
     static final String DATABASE_NAME = "MarsWeatherBD";
     static final String TABLE_NAME = "temperature";
-    static final int DATABASE_VERSION = 4;
+    static final int DATABASE_VERSION = 7;
     static final String CREATE_DB_TABLE =
         " CREATE TABLE " + TABLE_NAME +
         " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
         " terrestrial_date STRING, " +
         " min_temp_c DOUBLE NOT NULL, " +
         " max_temp_c DOUBLE NOT NULL); ";
+
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper(Context context){
@@ -127,8 +125,8 @@ public class MarsWeatherContentProvider extends ContentProvider {
         long rowID = db.insert(TABLE_NAME, "", contentValues);
         if (rowID > 0) {
             Uri _uri = ContentUris.withAppendedId(CONTENT_URI, rowID);
-            //Notify registered observers that a row was updated
-            getContext().getContentResolver().notifyChange(_uri, null);
+            // notify widgets and observers
+            notifyChange(_uri);
             return _uri;
         }
         throw new SQLException("Failed to add a row " + uri);
@@ -144,7 +142,8 @@ public class MarsWeatherContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
-       getContext().getContentResolver().notifyChange(uri, null);
+        // notify widgets and observers
+        notifyChange(uri);
         return count;
     }
 
@@ -158,7 +157,17 @@ public class MarsWeatherContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri );
         }
-        getContext().getContentResolver().notifyChange(uri, null);
+        // notify widgets and observers
+        notifyChange(uri);
         return count;
+    }
+
+    private void notifyChange(Uri uri){
+    //Notify registered observers that a row was updated
+    getContext().getContentResolver().notifyChange(uri, null);
+    //Notify widget by sending broadcast
+    Intent intent = new Intent(getContext(), MyWidgetProvider.class);
+    intent.setAction("com.fourbeams.marsweather.intent.action.DATA_CHANGED_IN_PROVIDER");
+    getContext().sendBroadcast(intent);
     }
 }

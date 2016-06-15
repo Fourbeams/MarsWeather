@@ -8,6 +8,7 @@ import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
 import retrofit2.Call;
 
 import java.io.IOException;
+import java.util.Date;
 
 import static com.fourbeams.marsweather.domain.RESTClient.MarsWeatherService.retrofit;
 
@@ -15,8 +16,8 @@ public class Processor {
 
     private Context context;
 
-    //TODO - remove
-    private static int counter;
+    //TODO remove / in use for testing
+/*    private static int counter;*/
 
     public Processor(Context context) {
         this.context = context;
@@ -39,15 +40,15 @@ public class Processor {
         POJO.ReportResponse report = call.execute().body();
         String terrestrialDate = report.getReport().getTerrestrialDate(); // date from server
 
-        //TODO - remove / in use for testing
+        //TODO remove / in use for testing
         /*try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
-        counter++;
-        terrestrialDate = counter + "";
-        //TODO - remove / in use for testing
+/*        counter++;
+        terrestrialDate = counter + "";*/
+        //TODO remove / in use for testing
 
         // obtaining date from provider
         String latestDateInContentProvider = "";

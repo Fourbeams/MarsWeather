@@ -16,33 +16,43 @@ import android.widget.TextView;
 import com.fourbeams.marsweather.R;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
 import com.fourbeams.marsweather.domain.ServiceHelper;
-import com.fourbeams.marsweather.domain.MyWidgetProvider;
 
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks{
 
     private static final int TEMPERATURE_LOADER = 0;
+    private MarsWeatherContentProviderObserver marsWeatherContentProviderObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
-        ServiceHelper.setContext(getApplicationContext());
         getLoaderManager().initLoader(TEMPERATURE_LOADER, null, this);
-        getContentResolver().registerContentObserver(
-                MarsWeatherContentProvider.CONTENT_URI, // observed URI
-                true,
-                new MarsWeatherContentProviderObserver(new Handler()));
 
+        marsWeatherContentProviderObserver = new MarsWeatherContentProviderObserver(new Handler());
+        this.getContentResolver().registerContentObserver(
+            MarsWeatherContentProvider.CONTENT_URI, true, marsWeatherContentProviderObserver);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ServiceHelper.getInstance().runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
+             ServiceHelper.getInstance(getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
             }
         });
-        new MyWidgetProvider();
+    }
+
+    @Override
+    protected void onPause (){
+        super.onPause();
+       this.getContentResolver().unregisterContentObserver(marsWeatherContentProviderObserver);
+    }
+
+    @Override
+    protected void onResume (){
+        super.onResume();
+        this.getContentResolver().registerContentObserver(
+                MarsWeatherContentProvider.CONTENT_URI, true, marsWeatherContentProviderObserver);
+        getLoaderManager().getLoader(TEMPERATURE_LOADER).forceLoad();
     }
 
     private class MarsWeatherContentProviderObserver extends ContentObserver {
@@ -66,12 +76,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         switch (loaderId){
             case (TEMPERATURE_LOADER):
                 return new CursorLoader(
-                        this,                                               // context
-                        MarsWeatherContentProvider.CONTENT_URI,             // dataUri,
-                        MarsWeatherContentProvider.TEMPERATURE_PROJECTION,  // projection
-                        null,                                               // selection
-                        null,                                               // selectionArgs
-                        null                                                // sort ordering
+                    this,                                               // context
+                    MarsWeatherContentProvider.CONTENT_URI,             // dataUri,
+                    MarsWeatherContentProvider.TEMPERATURE_PROJECTION,  // projection
+                    null,                                               // selection
+                    null,                                               // selectionArgs
+                    null                                                // sort ordering
                 );
             default: return null;
         }
@@ -81,14 +91,25 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoadFinished(Loader loader, Object o) {
         Cursor cursor = (Cursor) o;
         if (cursor.moveToLast()){
-            final String _id = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider._ID));
-            final String ter_date = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.TERRESTRIAL_DATE));
-            final String min_temp = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.MIN_TEMP_C));
-            final String max_temp = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.MAX_TEMP_C));
-            final TextView terrestrial_date = (TextView)findViewById(R.id.terrestrial_date);
-            terrestrial_date.post(new Runnable() {
+            final String terrestrialDate = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.TERRESTRIAL_DATE));
+            final String minTemp = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.MIN_TEMP_C));
+            final String maxTemp = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.MAX_TEMP_C));
+            final TextView terrestrialDateView = (TextView)findViewById(R.id.terrestrial_date_activity);
+            final TextView minTempView = (TextView)findViewById(R.id.min_temp_c_activity);
+            final TextView maxTempView = (TextView)findViewById(R.id.max_temp_c_activity);
+            terrestrialDateView.post(new Runnable() {
                 public void run() {
-                    terrestrial_date.setText(ter_date);
+                    terrestrialDateView.setText(terrestrialDate);
+                }
+            });
+            minTempView.post(new Runnable() {
+                public void run() {
+                    minTempView.setText(minTemp);
+                }
+            });
+            maxTempView.post(new Runnable() {
+                public void run() {
+                    maxTempView.setText(maxTemp);
                 }
             });
         }

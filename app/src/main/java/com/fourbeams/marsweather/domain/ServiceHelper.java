@@ -25,16 +25,9 @@ public class ServiceHelper {
 
     private ServiceHelper(){}
 
-    public static ServiceHelper getInstance() {
+    public static ServiceHelper getInstance(Context context) {
+        if (mContext == null) mContext = context;
         return INSTANCE;
-    }
-
-    public static void setContext (Context context) {
-        mContext = context;
-    }
-
-    public static boolean isContextNull () {
-        return (mContext == null);
     }
 
     public void runService (ServiceHelper.task task){
@@ -50,11 +43,11 @@ public class ServiceHelper {
     }
 
     private void startGetService(task task){
-        String key = task.GET_NEW_WEATHER_DATA_FROM_SERVER.toString();
-        if (!runningServicesPool.containsKey(key)) {
-            runningServicesPool.put(key, null );
+        String taskKey = task.GET_NEW_WEATHER_DATA_FROM_SERVER.toString();
+        if (!runningServicesPool.containsKey(taskKey)) {
+            runningServicesPool.put(taskKey, null );
             Intent startServiceIntent = new Intent(mContext, GetService.class);
-            startServiceIntent.putExtra("TASK", key);
+            startServiceIntent.putExtra("TASK", taskKey);
             mContext.startService(startServiceIntent);
         }
     }
