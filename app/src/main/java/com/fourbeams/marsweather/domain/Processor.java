@@ -17,7 +17,7 @@ public class Processor {
     private Context context;
 
     //TODO remove / in use for testing
-/*    private static int counter;*/
+//    private static int counter;
 
     public Processor(Context context) {
         this.context = context;
@@ -46,7 +46,7 @@ public class Processor {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
-/*        counter++;
+        /*counter++;
         terrestrialDate = counter + "";*/
         //TODO remove / in use for testing
 

@@ -22,6 +22,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        // obtaining new data from server
         ServiceHelper.getInstance(context.getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
         for (int i = 0; i < appWidgetIds.length; i++) {
@@ -39,7 +40,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
     public void onEnabled(Context context) {
         super.onEnabled(context);
         Intent intent = new Intent(context, MyWidgetProvider.class);
-        intent.setAction("com.fourbeams.marsweather.intent.action.DATA_CHANGED_IN_PROVIDER");
+        intent.setAction(DATA_CHANGED_IN_PROVIDER);
         context.sendBroadcast(intent);
     }
 
@@ -49,7 +50,6 @@ public class MyWidgetProvider extends AppWidgetProvider {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int appWidgetId = intent.getIntExtra(appWidgetManager.EXTRA_APPWIDGET_ID, appWidgetManager.INVALID_APPWIDGET_ID);
-            //if (ServiceHelper.isContextNull()) ServiceHelper.setContext(context);
             ServiceHelper.getInstance(context.getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }

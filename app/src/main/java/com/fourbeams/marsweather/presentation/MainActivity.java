@@ -28,31 +28,29 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        getLoaderManager().initLoader(TEMPERATURE_LOADER, null, this);
-
-        marsWeatherContentProviderObserver = new MarsWeatherContentProviderObserver(new Handler());
-        this.getContentResolver().registerContentObserver(
-            MarsWeatherContentProvider.CONTENT_URI, true, marsWeatherContentProviderObserver);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             ServiceHelper.getInstance(getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
+                ServiceHelper.getInstance(getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
             }
         });
+        marsWeatherContentProviderObserver = new MarsWeatherContentProviderObserver(new Handler());
+        getLoaderManager().initLoader(TEMPERATURE_LOADER, null, this).forceLoad();
     }
 
     @Override
     protected void onPause (){
         super.onPause();
-       this.getContentResolver().unregisterContentObserver(marsWeatherContentProviderObserver);
+        getContentResolver().unregisterContentObserver(marsWeatherContentProviderObserver);
+        getLoaderManager().destroyLoader(TEMPERATURE_LOADER);
     }
 
     @Override
     protected void onResume (){
         super.onResume();
-        this.getContentResolver().registerContentObserver(
+        getContentResolver().registerContentObserver(
                 MarsWeatherContentProvider.CONTENT_URI, true, marsWeatherContentProviderObserver);
-        getLoaderManager().getLoader(TEMPERATURE_LOADER).forceLoad();
+        getLoaderManager().initLoader(TEMPERATURE_LOADER, null, this).forceLoad();
     }
 
     private class MarsWeatherContentProviderObserver extends ContentObserver {
@@ -67,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
-            getLoaderManager().getLoader(TEMPERATURE_LOADER).forceLoad();
+           getLoaderManager().getLoader(TEMPERATURE_LOADER).forceLoad();
         }
     }
 
