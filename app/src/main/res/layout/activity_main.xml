@@ -3,53 +3,117 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="#000000"
+              android:orientation="vertical"
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="@dimen/activity_vertical_margin"
               android:paddingBottom="@dimen/activity_vertical_margin"
-              android:orientation="vertical"
               tools:context=".presentation.MainActivity">
-
- <!--   <android.support.design.widget.AppBarLayout
-            android:layout_height="wrap_content"
+    <LinearLayout
             android:layout_width="match_parent"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
-
-    </android.support.design.widget.AppBarLayout>-->
-
-
-    <TextView
-            android:id="@+id/terrestrial_date_activity"
-            android:text="Calendar date data is updating ..."
-            android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mars, sol 00.00"
+                    android:id="@+id/marsSol"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:id="@+id/marsTime"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="48sp"
+                    android:password="false"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Spring, Month 7"
+                    android:id="@+id/marsMonth"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="25sp"/>
-   <TextView
-            android:id="@+id/min_temp_c_activity"
-            android:text="min temperature data is updating ..."
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"/>
-    <TextView
-            android:id="@+id/max_temp_c_activity"
-            android:text="max temperature data is updating ..."
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"/>
+            android:orientation="vertical"
+            android:layout_marginTop="30dp">
+        <VideoView
+                android:layout_width="wrap_content"
+                android:layout_height="211dp"/>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:gravity="center_horizontal">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Day temperature "
+                    android:layout_gravity="center_vertical"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="..0"
+                    android:id="@+id/min_temp_c_activity"
+                    android:gravity="end"
+                    android:textColor="#ffffff"
+                    android:textSize="36sp"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:gravity="center_horizontal">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Night temperature "
+                    android:layout_gravity="center_vertical"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="..0"
+                    android:id="@+id/max_temp_c_activity"
+                    android:gravity="end"
+                    android:textColor="#ffffff"
+                    android:textSize="36sp"/>
+        </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_dialog_email"/>
-
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:gravity="bottom">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right">
+            <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/widget_button_refresh"
+                    android:background="@drawable/ic_refresh"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/terrestrial_date_activity"
+                    android:text="Updated at 00/00 00:00 "
+                    android:layout_gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:textColor="#ffffff"/>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
