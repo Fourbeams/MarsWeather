@@ -71,9 +71,9 @@ public class MyWidgetProvider extends AppWidgetProvider {
                 String latestDateInContentProvider = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.TERRESTRIAL_DATE));
                 Double maxTempCInContentProvider = cursor.getDouble(cursor.getColumnIndex(MarsWeatherContentProvider.MAX_TEMP_C));
                 Double minTempCInContentProvider = cursor.getDouble(cursor.getColumnIndex(MarsWeatherContentProvider.MIN_TEMP_C));
-                remoteViews.setTextViewText(R.id.textView, latestDateInContentProvider);
+                //remoteViews.setTextViewText(R.id.textView, latestDateInContentProvider);
                 remoteViews.setTextViewText(R.id.textView2, String.valueOf(maxTempCInContentProvider));
-                remoteViews.setTextViewText(R.id.textView3, String.valueOf(minTempCInContentProvider));
+                //remoteViews.setTextViewText(R.id.textView3, String.valueOf(minTempCInContentProvider));
                 for (int i=0; i<appWidgetIds.length; i++) {
                     appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
                 }
