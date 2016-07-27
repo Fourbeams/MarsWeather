@@ -46,49 +46,55 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="30dp" android:gravity="center_horizontal">
         <VideoView
+                android:id="@+id/video_view"
                 android:layout_width="wrap_content"
                 android:layout_height="211dp"/>
         <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" android:gravity="center_horizontal">
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Day temperature "
-                    android:layout_gravity="center_vertical"
-                    android:textColor="#ffffff"
-                    android:textSize="18sp"/>
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="..0"
-                    android:id="@+id/min_temp_c_activity"
-                    android:gravity="end"
-                    android:textColor="#ffffff"
-                    android:textSize="36sp"/>
-        </LinearLayout>
-        <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" android:gravity="center_horizontal">
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Night temperature "
-                    android:layout_gravity="center_vertical"
-                    android:textColor="#ffffff"
-                    android:textSize="18sp"/>
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="..0"
-                    android:id="@+id/max_temp_c_activity"
-                    android:gravity="end"
-                    android:textColor="#ffffff"
-                    android:textSize="36sp"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:gravity="center_horizontal">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Day"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="..0"
+                        android:id="@+id/min_temp_c_activity"
+                        android:gravity="end"
+                        android:textColor="#ffffff"
+                        android:textSize="36sp"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:gravity="center_horizontal">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Night"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp" android:singleLine="false"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="..0"
+                        android:id="@+id/max_temp_c_activity"
+                        android:gravity="end"
+                        android:textColor="#ffffff"
+                        android:textSize="36sp"/>
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
@@ -101,11 +107,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="right">
-            <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/widget_button_refresh"
-                    android:background="@drawable/ic_refresh"/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -114,6 +115,17 @@
                     android:layout_gravity="center_vertical"
                     android:textSize="16sp"
                     android:textColor="#ffffff"/>
+            <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/widget_button_refresh"
+                    android:background="@drawable/ic_refresh"/>
+            <ProgressBar
+                    android:id="@+id/progress_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true" />
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

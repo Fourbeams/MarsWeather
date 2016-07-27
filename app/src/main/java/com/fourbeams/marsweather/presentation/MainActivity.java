@@ -4,17 +4,18 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import android.widget.VideoView;
 import com.fourbeams.marsweather.R;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
 import com.fourbeams.marsweather.domain.ServiceHelper;
@@ -33,10 +34,29 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                displayLoadingIndicator();
                 ServiceHelper.getInstance(getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
             }
         });
         marsWeatherContentProviderObserver = new MarsWeatherContentProviderObserver(new Handler());
+
+        //video playing setup
+        final VideoView videoView = (VideoView) findViewById(R.id.video_view);
+        try {
+        videoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.nasa_mars_rotation));
+        } catch (Exception e) {
+            Log.e("Error", e.getMessage());
+            e.printStackTrace();
+        }
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+                videoView.start();
+            }
+        });
+
+        displayLoadingIndicator();
         getLoaderManager().initLoader(TEMPERATURE_LOADER, null, this).forceLoad();
     }
 
@@ -67,7 +87,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
-           getLoaderManager().getLoader(TEMPERATURE_LOADER).forceLoad();
+            displayLoadingIndicator();
+            getLoaderManager().getLoader(TEMPERATURE_LOADER).forceLoad();
         }
     }
 
@@ -114,9 +135,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             });
         }
         cursor.close();
+        hideLoadingIndicator();
     }
 
     @Override
     public void onLoaderReset(Loader loader) {}
+
+    public void hideLoadingIndicator(){
+        findViewById(R.id.progress_spinner).setVisibility(View.GONE);
+        findViewById(R.id.widget_button_refresh).setVisibility(View.VISIBLE);
+    }
+
+    private void displayLoadingIndicator(){
+        findViewById(R.id.progress_spinner).setVisibility(View.VISIBLE);
+        findViewById(R.id.widget_button_refresh).setVisibility(View.GONE);
+    }
 
 }

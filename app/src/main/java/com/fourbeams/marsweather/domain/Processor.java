@@ -17,7 +17,7 @@ public class Processor {
     private Context context;
 
     //TODO remove / in use for testing
-//    private static int counter;
+    //private static int counter;
 
     public Processor(Context context) {
         this.context = context;
@@ -45,8 +45,8 @@ public class Processor {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }*/
-        /*counter++;
+        }
+        counter++;
         terrestrialDate = counter + "";*/
         //TODO remove / in use for testing
 
@@ -70,5 +70,8 @@ public class Processor {
             contentValues.put(MarsWeatherContentProvider.MAX_TEMP_C, maxTemp);
             context.getContentResolver().insert(MarsWeatherContentProvider.CONTENT_URI, contentValues);
         }
+
+        // if date from server == date in provider, then do not insert new row, but hide Loading Indicator
+
     }
 }
