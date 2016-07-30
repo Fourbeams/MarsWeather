@@ -1,14 +1,14 @@
 package com.fourbeams.marsweather.presentation;
 
 import android.app.LoaderManager;
-import android.content.CursorLoader;
+import android.content.*;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import android.widget.VideoView;
 import com.fourbeams.marsweather.R;
+import com.fourbeams.marsweather.domain.Processor;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
 import com.fourbeams.marsweather.domain.ServiceHelper;
 
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         marsWeatherContentProviderObserver = new MarsWeatherContentProviderObserver(new Handler());
 
         //video playing setup
-        final VideoView videoView = (VideoView) findViewById(R.id.video_view);
+/*        final VideoView videoView = (VideoView) findViewById(R.id.video_view);
         try {
         videoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.nasa_mars_rotation));
         } catch (Exception e) {
@@ -54,16 +55,27 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 mp.setLooping(true);
                 videoView.start();
             }
-        });
+        });*/
+        // registering receiver for incoming intents, that processor complete work with no new data inserted in to content provider
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter(Processor.PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER));
 
         displayLoadingIndicator();
         getLoaderManager().initLoader(TEMPERATURE_LOADER, null, this).forceLoad();
     }
 
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            hideLoadingIndicator();
+        }
+    };
+
     @Override
     protected void onPause (){
         super.onPause();
         getContentResolver().unregisterContentObserver(marsWeatherContentProviderObserver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         getLoaderManager().destroyLoader(TEMPERATURE_LOADER);
     }
 
@@ -72,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onResume();
         getContentResolver().registerContentObserver(
                 MarsWeatherContentProvider.CONTENT_URI, true, marsWeatherContentProviderObserver);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter(Processor.PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER));
         getLoaderManager().initLoader(TEMPERATURE_LOADER, null, this).forceLoad();
     }
 

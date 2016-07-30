@@ -2,8 +2,10 @@ package com.fourbeams.marsweather.domain;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.v4.content.LocalBroadcastManager;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
 import retrofit2.Call;
 
@@ -15,6 +17,8 @@ import static com.fourbeams.marsweather.domain.RESTClient.MarsWeatherService.ret
 public class Processor {
 
     private Context context;
+    public static final String PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER
+            = "com.fourbeams.marsweather.intent.action.PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER";
 
     //TODO remove / in use for testing
     //private static int counter;
@@ -50,7 +54,7 @@ public class Processor {
         terrestrialDate = counter + "";*/
         //TODO remove / in use for testing
 
-        // obtaining date from provider
+        // obtaining last date from content provider
         String latestDateInContentProvider = "";
         String URL = "content://" + MarsWeatherContentProvider.PROVIDER_NAME + "/temperature/last_date";
         Cursor cursor = context.getContentResolver().query(Uri.parse(URL), MarsWeatherContentProvider.TEMPERATURE_PROJECTION, null, null, null);
@@ -59,11 +63,11 @@ public class Processor {
         }
         cursor.close();
 
-        // if date from server != date in provider, then insert new row
+        // if last date from server != last date in content provider, then insert new row
         if (!terrestrialDate.equals(latestDateInContentProvider)){
             double minTemp = report.getReport().getMinTemp();
             double maxTemp = report.getReport().getMaxTemp();
-            // save result to contentProvider through contentResolver
+            // saving result to contentProvider through contentResolver
             ContentValues contentValues = new ContentValues();
             contentValues.put(MarsWeatherContentProvider.TERRESTRIAL_DATE, terrestrialDate);
             contentValues.put(MarsWeatherContentProvider.MIN_TEMP_C, minTemp);
@@ -71,7 +75,17 @@ public class Processor {
             context.getContentResolver().insert(MarsWeatherContentProvider.CONTENT_URI, contentValues);
         }
 
-        // if date from server == date in provider, then do not insert new row, but hide Loading Indicator
+        // if date from server == date in provider,  do not insert new row, but hide send intent to stop loading indicator
+        sendMessage();
+    }
 
+    // sending message that there is no new data at server and loading indicator should stops
+    private void sendMessage() {
+        Intent intent = new Intent(PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER);
+        // using LocalBroadcastManager to update an activity
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+        // due to  widget works in separate process we can't listen any broadcasts
+        // through registered receivers through LocalBroadcastManager. So we have to use context.sendBroadcast
+        context.sendBroadcast(intent);
     }
 }

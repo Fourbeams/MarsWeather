@@ -31,6 +31,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"></action>
                 <action android:name="com.fourbeams.marsweather.intent.action.UPDATE_TEMPERATURE_BUTTON_PRESSED"></action>
                 <action android:name="com.fourbeams.marsweather.intent.action.DATA_CHANGED_IN_PROVIDER"></action>
+                <action android:name="com.fourbeams.marsweather.intent.action.PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER"></action>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
                        android:resource="@xml/mywidget_info"></meta-data>

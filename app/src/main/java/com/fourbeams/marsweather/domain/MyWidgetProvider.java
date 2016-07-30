@@ -9,6 +9,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.view.View;
 import android.widget.RemoteViews;
 import com.fourbeams.marsweather.R;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
@@ -23,8 +24,9 @@ public class MyWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // obtaining new data from server
-        ServiceHelper.getInstance(context.getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+        displayLoadingIndicator(remoteViews);
+        ServiceHelper.getInstance(context.getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
         for (int i = 0; i < appWidgetIds.length; i++) {
             Intent intent = new Intent(context, MyWidgetProvider.class);
             intent.setAction(UPDATE_TEMPERATURE_BUTTON_PRESSED);
@@ -41,24 +43,27 @@ public class MyWidgetProvider extends AppWidgetProvider {
         super.onEnabled(context);
         Intent intent = new Intent(context, MyWidgetProvider.class);
         intent.setAction(DATA_CHANGED_IN_PROVIDER);
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+        displayLoadingIndicator(remoteViews);
         context.sendBroadcast(intent);
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        // if the button to update data from server where pressed
         if (intent.getAction().equals(UPDATE_TEMPERATURE_BUTTON_PRESSED)) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int appWidgetId = intent.getIntExtra(appWidgetManager.EXTRA_APPWIDGET_ID, appWidgetManager.INVALID_APPWIDGET_ID);
+            displayLoadingIndicator(remoteViews);
             ServiceHelper.getInstance(context.getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
-
+        // if data changed at provider
         if (intent.getAction().equals(DATA_CHANGED_IN_PROVIDER)) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int [] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, MyWidgetProvider.class));
-
             String URL = "content://" + MarsWeatherContentProvider.PROVIDER_NAME + "/temperature/last_date";
             CursorLoader cursorLoader = new CursorLoader(
                     context,
@@ -66,19 +71,42 @@ public class MyWidgetProvider extends AppWidgetProvider {
                     MarsWeatherContentProvider.TEMPERATURE_PROJECTION,
                     null, null, null);
             Cursor cursor = cursorLoader.loadInBackground();
-
             if (cursor.moveToLast()) {
                 String latestDateInContentProvider = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.TERRESTRIAL_DATE));
-                Double maxTempCInContentProvider = cursor.getDouble(cursor.getColumnIndex(MarsWeatherContentProvider.MAX_TEMP_C));
-                Double minTempCInContentProvider = cursor.getDouble(cursor.getColumnIndex(MarsWeatherContentProvider.MIN_TEMP_C));
-                //remoteViews.setTextViewText(R.id.textView, latestDateInContentProvider);
+                Integer maxTempCInContentProvider = cursor.getInt(cursor.getColumnIndex(MarsWeatherContentProvider.MAX_TEMP_C));
+                Integer minTempCInContentProvider = cursor.getInt(cursor.getColumnIndex(MarsWeatherContentProvider.MIN_TEMP_C));
+                remoteViews.setTextViewText(R.id.textView, latestDateInContentProvider);
                 remoteViews.setTextViewText(R.id.textView2, String.valueOf(maxTempCInContentProvider));
-                //remoteViews.setTextViewText(R.id.textView3, String.valueOf(minTempCInContentProvider));
+                remoteViews.setTextViewText(R.id.textView3, String.valueOf(minTempCInContentProvider));
                 for (int i=0; i<appWidgetIds.length; i++) {
+                    hideLoadingIndicator(remoteViews);
                     appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
                 }
             }
         }
+
+        // if service completed and returned, that no new data updated from server to content provider
+        if (intent.getAction().equals(Processor.PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER)) {
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            int [] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, MyWidgetProvider.class));
+            for (int i=0; i<appWidgetIds.length; i++) {
+                hideLoadingIndicator(remoteViews);
+                appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
+            }
+        }
+
         super.onReceive(context, intent);
     }
+
+    private void hideLoadingIndicator(RemoteViews remoteViews){
+        remoteViews.setViewVisibility(R.id.progress_spinner,View.GONE);
+        remoteViews.setViewVisibility(R.id.widget_button_refresh,View.VISIBLE);
+    }
+
+    private void displayLoadingIndicator(RemoteViews remoteViews){
+        remoteViews.setViewVisibility(R.id.progress_spinner,View.VISIBLE);
+        remoteViews.setViewVisibility(R.id.widget_button_refresh,View.GONE);
+    }
+
 }
