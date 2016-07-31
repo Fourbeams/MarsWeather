@@ -23,14 +23,14 @@
                     android:layout_height="wrap_content"
                     android:text="Mars, sol 00.00"
                     android:id="@+id/marsSol"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorText"
                     android:textSize="16sp" />
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="00:00"
                     android:id="@+id/marsTime"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorText"
                     android:textSize="48sp"
                     android:password="false"/>
             <TextView
@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:text="Spring, Month 7"
                     android:id="@+id/marsMonth"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorText"
                     android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
@@ -61,7 +61,7 @@
                         android:layout_height="wrap_content"
                         android:text="Day"
                         android:layout_gravity="center_vertical"
-                        android:textColor="#ffffff"
+                        android:textColor="@color/colorText"
                         android:textSize="18sp"/>
                 <TextView
                         android:layout_width="wrap_content"
@@ -69,27 +69,29 @@
                         android:text="..0"
                         android:id="@+id/min_temp_c_activity"
                         android:gravity="end"
-                        android:textColor="#ffffff"
+                        android:textColor="@color/colorText"
                         android:textSize="36sp"/>
             </LinearLayout>
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:gravity="center_horizontal">
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal">
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Night"
                         android:layout_gravity="center_vertical"
-                        android:textColor="#ffffff"
-                        android:textSize="18sp" android:singleLine="false"/>
+                        android:textColor="@color/colorText"
+                        android:textSize="18sp"
+                        android:singleLine="false"/>
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="..0"
                         android:id="@+id/max_temp_c_activity"
                         android:gravity="end"
-                        android:textColor="#ffffff"
+                        android:textColor="@color/colorText"
                         android:textSize="36sp"/>
             </LinearLayout>
         </LinearLayout>
@@ -111,7 +113,7 @@
                     android:text="Updated at 00/00 00:00 "
                     android:layout_gravity="center_vertical"
                     android:textSize="16sp"
-                    android:textColor="#ffffff"/>
+                    android:textColor="@color/colorText"/>
             <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
