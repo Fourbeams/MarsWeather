@@ -13,6 +13,7 @@ public class ServiceHelper {
 
     private final static ServiceHelper INSTANCE = new ServiceHelper();
     private static Context mContext;
+    //TODO change to appropriate collection
     private HashMap<String, Object> runningServicesPool = new HashMap<> ();
 
     public enum task{

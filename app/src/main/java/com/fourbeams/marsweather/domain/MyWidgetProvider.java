@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 import com.fourbeams.marsweather.R;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
+import com.fourbeams.marsweather.presentation.MainActivity;
 
 public class MyWidgetProvider extends AppWidgetProvider {
 
@@ -28,11 +29,17 @@ public class MyWidgetProvider extends AppWidgetProvider {
         displayLoadingIndicator(remoteViews);
         ServiceHelper.getInstance(context.getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
         for (int i = 0; i < appWidgetIds.length; i++) {
-            Intent intent = new Intent(context, MyWidgetProvider.class);
-            intent.setAction(UPDATE_TEMPERATURE_BUTTON_PRESSED);
-            intent.putExtra(appWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            remoteViews.setOnClickPendingIntent(R.id.widget_button_refresh, pendingIntent);
+
+            // open main activity when widget area clicked
+            Intent startMainActivityIntent = new Intent(context, MainActivity.class);
+            PendingIntent startMainActivityPendingIntent = PendingIntent.getActivity(context, 0, startMainActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            remoteViews.setOnClickPendingIntent(R.id.widget_top_layout, startMainActivityPendingIntent);
+
+            Intent updateButtonPressedIntent = new Intent(context, MyWidgetProvider.class);
+            updateButtonPressedIntent.setAction(UPDATE_TEMPERATURE_BUTTON_PRESSED);
+            updateButtonPressedIntent.putExtra(appWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
+            PendingIntent updateButtonPressedPendingIntent = PendingIntent.getBroadcast(context, 0, updateButtonPressedIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            remoteViews.setOnClickPendingIntent(R.id.widget_button_refresh, updateButtonPressedPendingIntent);
             appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
         }
         super.onUpdate(context, appWidgetManager, appWidgetIds);
@@ -50,7 +57,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // if the button to update data from server where pressed
+        // if update data from server button where pressed
         if (intent.getAction().equals(UPDATE_TEMPERATURE_BUTTON_PRESSED)) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -59,7 +66,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
             ServiceHelper.getInstance(context.getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
-        // if data changed at provider
+        // if data changed at content provider
         if (intent.getAction().equals(DATA_CHANGED_IN_PROVIDER)) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -84,8 +91,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
                 }
             }
         }
-
-        // if service completed and returned, that no new data updated from server to content provider
+        // if service finished and return, that no new data updated from server to content provider
         if (intent.getAction().equals(Processor.PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER)) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -95,7 +101,6 @@ public class MyWidgetProvider extends AppWidgetProvider {
                 appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
             }
         }
-
         super.onReceive(context, intent);
     }
 
