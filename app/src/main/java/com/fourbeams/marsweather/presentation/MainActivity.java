@@ -4,28 +4,26 @@ import android.app.LoaderManager;
 import android.content.*;
 import android.database.ContentObserver;
 import android.database.Cursor;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import android.widget.VideoView;
 import com.fourbeams.marsweather.R;
+import com.fourbeams.marsweather.domain.DateAndTimeUtil;
 import com.fourbeams.marsweather.domain.Processor;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
 import com.fourbeams.marsweather.domain.ServiceHelper;
-
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks{
 
     private static final int TEMPERATURE_LOADER = 0;
     private MarsWeatherContentProviderObserver marsWeatherContentProviderObserver;
+    private DateAndTimeUtil dateAndTimeHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +38,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
         marsWeatherContentProviderObserver = new MarsWeatherContentProviderObserver(new Handler());
+        dateAndTimeHelper = new DateAndTimeUtil();
+        TextView sol = (TextView) findViewById(R.id.activityMarsSol);
+        TextView marsTime = (TextView) findViewById(R.id.marsTime);
+        sol.setText(dateAndTimeHelper.getMarsSol());
+        marsTime.setText(dateAndTimeHelper.getMarsTime());
 
         //video playing setup
 /*        final VideoView videoView = (VideoView) findViewById(R.id.video_view);

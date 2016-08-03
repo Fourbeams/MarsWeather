@@ -18,13 +18,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:orientation="vertical">
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mars, sol 00.00"
-                    android:id="@+id/marsSol"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="16sp" />
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="horizontal">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mars, sol "
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16sp" />
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00.00"
+                        android:id="@+id/activityMarsSol"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16sp" />
+            </LinearLayout>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
