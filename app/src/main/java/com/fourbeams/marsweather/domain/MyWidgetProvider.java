@@ -25,6 +25,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // obtaining new data from server
+
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
         displayLoadingIndicator(remoteViews);
         ServiceHelper.getInstance(context.getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
@@ -58,6 +59,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         // if update data from server button where pressed
+        // we start service to get data from server
         if (intent.getAction().equals(UPDATE_TEMPERATURE_BUTTON_PRESSED)) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -67,6 +69,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
         // if data changed at content provider
+        // we update the UI using data from cursor via cursor loader
         if (intent.getAction().equals(DATA_CHANGED_IN_PROVIDER)) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -91,13 +94,16 @@ public class MyWidgetProvider extends AppWidgetProvider {
                 }
             }
         }
-        // if service finished and return, that no new data updated from server to content provider
+        // if service finished and returned, that no new data updated from server to content provider
+        // we just stop the rotation of loading indicator
         if (intent.getAction().equals(Processor.PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER)) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            int [] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, MyWidgetProvider.class));
+            int [] appWidgetIds = AppWidgetManager.getInstance(context)
+                    .getAppWidgetIds(new ComponentName(context, MyWidgetProvider.class));
             for (int i=0; i<appWidgetIds.length; i++) {
                 hideLoadingIndicator(remoteViews);
+                // TODO we update app widget without setting actual values from content provider to remoteViews
                 appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
             }
         }
