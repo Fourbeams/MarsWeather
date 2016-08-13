@@ -20,7 +20,7 @@ public class Processor {
     public static final String PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER
             = "com.fourbeams.marsweather.intent.action.PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER";
 
-    //TODO remove / in use for testing
+    //delay in REST service - in use for testing
     //private static int counter;
 
     public Processor(Context context) {
@@ -44,7 +44,7 @@ public class Processor {
         POJO.ReportResponse report = call.execute().body();
         String terrestrialDate = report.getReport().getTerrestrialDate(); // date from server
 
-        //TODO remove / in use for testing
+        //delay in REST service - in use for testing
         /*try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
@@ -52,7 +52,7 @@ public class Processor {
         }
         counter++;
         terrestrialDate = counter + "";*/
-        //TODO remove / in use for testing
+        //delay in REST service - in use for testing
 
         // obtaining last date from content provider
         String latestDateInContentProvider = "";
@@ -67,11 +67,13 @@ public class Processor {
         if (!terrestrialDate.equals(latestDateInContentProvider)){
             double minTemp = report.getReport().getMinTemp();
             double maxTemp = report.getReport().getMaxTemp();
+            String season = report.getReport().getSeason();
             // saving result to contentProvider through contentResolver
             ContentValues contentValues = new ContentValues();
             contentValues.put(MarsWeatherContentProvider.TERRESTRIAL_DATE, terrestrialDate);
             contentValues.put(MarsWeatherContentProvider.MIN_TEMP_C, minTemp);
             contentValues.put(MarsWeatherContentProvider.MAX_TEMP_C, maxTemp);
+            contentValues.put(MarsWeatherContentProvider.SEASON, season);
             context.getContentResolver().insert(MarsWeatherContentProvider.CONTENT_URI, contentValues);
         }
 

@@ -19,11 +19,15 @@ import com.fourbeams.marsweather.domain.Processor;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
 import com.fourbeams.marsweather.domain.ServiceHelper;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks{
 
     private static final int TEMPERATURE_LOADER = 0;
     private MarsWeatherContentProviderObserver marsWeatherContentProviderObserver;
-    private DateAndTimeUtil dateAndTimeHelper;
+    private DateAndTimeUtil dateAndTimeUtil;
+    private BroadcastReceiver sysTimeChangeBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,27 +42,33 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
         marsWeatherContentProviderObserver = new MarsWeatherContentProviderObserver(new Handler());
-        dateAndTimeHelper = new DateAndTimeUtil();
+        dateAndTimeUtil = new DateAndTimeUtil();
         TextView sol = (TextView) findViewById(R.id.activityMarsSol);
-        TextView marsTime = (TextView) findViewById(R.id.marsTime);
-        sol.setText(dateAndTimeHelper.getMarsSol());
-        marsTime.setText(dateAndTimeHelper.getMarsTime());
+        //TextView marsTime = (TextView) findViewById(R.id.marsTime);
+        sol.setText(dateAndTimeUtil.getMarsSol() + "  ");
+        //marsTime.setText(dateAndTimeUtil.getMarsTime());
 
-        //video playing setup
-/*        final VideoView videoView = (VideoView) findViewById(R.id.video_view);
-        try {
-        videoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.nasa_mars_rotation));
-        } catch (Exception e) {
-            Log.e("Error", e.getMessage());
-            e.printStackTrace();
-        }
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.setLooping(true);
-                videoView.start();
+        final TextView marsTimeView = (TextView) findViewById(R.id.marsTime);
+        marsTimeView.post(new Runnable() {
+            public void run() {
+                marsTimeView.setText(dateAndTimeUtil.getMarsTime());
             }
-        });*/
+        });
+        sysTimeChangeBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
+                    final TextView marsTimeView = (TextView) findViewById(R.id.marsTime);
+                    marsTimeView.post(new Runnable() {
+                        public void run() {
+                            marsTimeView.setText(dateAndTimeUtil.getMarsTime());
+                        }
+                    });
+                }
+            }
+        };
+
+        registerReceiver(sysTimeChangeBroadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
         // registering receiver for incoming intents, that processor complete work with no new data inserted in to content provider
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter(Processor.PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER));
@@ -80,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         getContentResolver().unregisterContentObserver(marsWeatherContentProviderObserver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         getLoaderManager().destroyLoader(TEMPERATURE_LOADER);
+        unregisterReceiver(sysTimeChangeBroadcastReceiver);
     }
 
     @Override
@@ -90,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter(Processor.PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER));
         getLoaderManager().initLoader(TEMPERATURE_LOADER, null, this).forceLoad();
+        registerReceiver(sysTimeChangeBroadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
     }
 
     private class MarsWeatherContentProviderObserver extends ContentObserver {
@@ -132,9 +144,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             final String terrestrialDate = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.TERRESTRIAL_DATE));
             final String minTemp = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.MIN_TEMP_C));
             final String maxTemp = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.MAX_TEMP_C));
+            final String season = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.SEASON));
             final TextView terrestrialDateView = (TextView)findViewById(R.id.terrestrial_date_activity);
             final TextView minTempView = (TextView)findViewById(R.id.min_temp_c_activity);
             final TextView maxTempView = (TextView)findViewById(R.id.max_temp_c_activity);
+            final TextView seasonView = (TextView)findViewById(R.id.marsMonth);
             terrestrialDateView.post(new Runnable() {
                 public void run() {
                     terrestrialDateView.setText(terrestrialDate);
@@ -148,6 +162,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             maxTempView.post(new Runnable() {
                 public void run() {
                     maxTempView.setText(maxTemp);
+                }
+            });
+            seasonView.post(new Runnable() {
+                public void run() {
+                    seasonView.setText(season);
                 }
             });
         }
