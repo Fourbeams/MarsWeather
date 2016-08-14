@@ -9,6 +9,7 @@
 .idea/dictionaries
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
+.idea/modules
 .idea/modules/app/app.iml
 
 # Sensitive or high-churn files:

@@ -5,14 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Debug;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
+import com.fourbeams.marsweather.domain.REST.MarsWeatherService;
+import com.fourbeams.marsweather.domain.REST.RESTServiceGenerator;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
 import retrofit2.Call;
 
 import java.io.IOException;
-import java.util.Date;
-
-import static com.fourbeams.marsweather.domain.RESTClient.MarsWeatherService.retrofit;
 
 public class Processor {
 
@@ -21,7 +22,7 @@ public class Processor {
             = "com.fourbeams.marsweather.intent.action.PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER";
 
     //delay in REST service - in use for testing
-    //private static int counter;
+    /*private static int counter;*/
 
     public Processor(Context context) {
         this.context = context;
@@ -32,21 +33,25 @@ public class Processor {
             try {
                 getNewWeatherData();
             } catch (IOException e) {
+                sendAPINotAvailableMessage();
                 e.printStackTrace();
             }
         }
     }
 
     private void getNewWeatherData() throws IOException {
-        RESTClient.MarsWeatherService marsWeatherService = retrofit.create(RESTClient.MarsWeatherService.class);
-        // getting data from JSON, type of returned object defined in generic
+        // Create a REST adapter which points Mars Weather API endpoint
+        MarsWeatherService marsWeatherService = RESTServiceGenerator.createService(MarsWeatherService.class);
+        // Fetch a list of the weather parameters
         final Call<POJO.ReportResponse> call = marsWeatherService.getJSON();
+        // Execute - this throws exception if API not available or it reached the timeout values
         POJO.ReportResponse report = call.execute().body();
+
         String terrestrialDate = report.getReport().getTerrestrialDate(); // date from server
 
         //delay in REST service - in use for testing
         /*try {
-            Thread.sleep(3000);
+            Thread.sleep(6000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -90,4 +95,11 @@ public class Processor {
         // through registered receivers through LocalBroadcastManager. So we have to use context.sendBroadcast
         context.sendBroadcast(intent);
     }
+    private void sendAPINotAvailableMessage(){
+        // in case API is not available we just consider it as API is reachable, but no new data available
+        //Log.d("TAG!","TimeOut error!");
+        sendMessage();
+    }
+
+
 }

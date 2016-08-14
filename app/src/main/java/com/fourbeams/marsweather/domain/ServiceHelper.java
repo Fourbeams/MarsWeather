@@ -1,10 +1,10 @@
 package com.fourbeams.marsweather.domain;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The service helper is a common interface for upper layers to start the particular service
@@ -13,7 +13,7 @@ public class ServiceHelper {
 
     private final static ServiceHelper INSTANCE = new ServiceHelper();
     private static Context mContext;
-    private HashMap<String, Object> runningServicesPool = new HashMap<> ();
+    private Set <String> runningServicesPool = new HashSet <>();
 
     public enum task{
         GET_NEW_WEATHER_DATA_FROM_SERVER {
@@ -45,8 +45,8 @@ public class ServiceHelper {
 
     private void startGetService(task task){
         String taskKey = task.GET_NEW_WEATHER_DATA_FROM_SERVER.toString();
-        if (!runningServicesPool.containsKey(taskKey)) {
-            runningServicesPool.put(taskKey, null );
+        if (!runningServicesPool.contains(taskKey)) {
+            runningServicesPool.add(taskKey);
             Intent startServiceIntent = new Intent(mContext, GetService.class);
             startServiceIntent.putExtra("TASK", taskKey);
             mContext.startService(startServiceIntent);
