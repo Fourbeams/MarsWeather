@@ -1,5 +1,7 @@
 package com.fourbeams.marsweather.presentation;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.LoaderManager;
 import android.content.*;
 import android.database.ContentObserver;
@@ -10,7 +12,9 @@ import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fourbeams.marsweather.R;
@@ -41,6 +45,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 ServiceHelper.getInstance(getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
             }
         });
+
+        ImageButton infoButton = (ImageButton) findViewById(R.id.activity_button_info);
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playShowViewAnimation();
+            }
+        });
+        LinearLayout infoView = (LinearLayout) findViewById(R.id.info_layout);
+        infoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playHideViewAnimation(view);
+            }
+        });
+
         marsWeatherContentProviderObserver = new MarsWeatherContentProviderObserver(new Handler());
         dateAndTimeUtil = new DateAndTimeUtil();
         TextView sol = (TextView) findViewById(R.id.activityMarsSol);
@@ -183,6 +203,47 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private void displayLoadingIndicator(){
         findViewById(R.id.progress_spinner).setVisibility(View.VISIBLE);
         findViewById(R.id.widget_button_refresh).setVisibility(View.GONE);
+    }
+
+    private void playShowViewAnimation(){
+        // previously invisible view
+        View myView = findViewById(R.id.info_layout);
+        // get the center for the clipping circle
+        //int cx = (myView.getLeft() + myView.getRight()) / 2;
+        //int cy = (myView.getTop() + myView.getBottom()) / 2;
+        ImageButton infoButtonView = (ImageButton) findViewById(R.id.activity_button_info);
+        int cx = infoButtonView.getRight();
+        int cy = infoButtonView.getBottom();
+        // get the final radius for the clipping circle
+        int finalRadius = Math.max(myView.getWidth(), myView.getHeight());
+        // create the animator for this view (the start radius is zero)
+        Animator anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
+        // make the view visible and start the animation
+        myView.setVisibility(View.VISIBLE);
+        anim.start();
+    }
+
+    private void playHideViewAnimation (View view){
+        // previously visible view
+        final View myView = view;
+        // get the center for the clipping circle
+        ImageButton infoButtonView = (ImageButton) findViewById(R.id.activity_button_info);
+        int cx = infoButtonView.getRight();
+        int cy = infoButtonView.getBottom();
+        // get the initial radius for the clipping circle
+        int initialRadius = myView.getWidth();
+        // create the animation (the final radius is zero)
+        Animator anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, initialRadius, 0);
+        // make the view invisible when the animation is done
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                myView.setVisibility(View.INVISIBLE);
+            }
+        });
+        // start the animation
+        anim.start();
     }
 
 }
