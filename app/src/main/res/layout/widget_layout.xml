@@ -1,172 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/widget_top_layout"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@drawable/mars"
-              android:orientation="vertical"
-              tools:context=".presentation.MainActivity"
-              android:layout_gravity="fill_vertical">
-    <LinearLayout
-            android:id="@+id/widget_work_area"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:clickable="false">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".presentation.MainActivity">
+    <ImageView android:layout_width="match_parent"
+               android:layout_height="match_parent" android:src="@drawable/mars" android:scaleType="centerCrop"/>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:layout_gravity="fill_vertical" android:id="@+id/widget_top_layout">
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:measureWithLargestChild="false" android:longClickable="false">
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mars, sol 00.00"
-                    android:id="@+id/marsSol"
-                    android:textColor="@color/colorText"
-                    android:shadowColor="#424242"
-                    android:shadowDx="1"
-                    android:shadowDy="1"
-                    android:shadowRadius="1"
-                    android:textSize="16sp"/>
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="00:00"
-                    android:id="@+id/marsTime"
-                    android:textColor="@color/colorText"
-                    android:shadowColor="#424242"
-                    android:shadowDx="1"
-                    android:shadowDy="1"
-                    android:shadowRadius="1"
-                    android:textSize="48sp"
-                    android:layout_marginBottom="-6dp" android:layout_marginTop="-6dp"
-                    android:layout_marginLeft="-3dp"/>
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Spring, Month 7  "
-                        android:id="@+id/marsMonth"
-                        android:textColor="@color/colorText"
-                        android:shadowColor="#424242"
-                        android:shadowDx="1"
-                        android:shadowDy="1"
-                        android:shadowRadius="1"
-                        android:textSize="16sp"/>
-                <ImageButton
-                        android:layout_width="@dimen/design_fab_image_size"
-                        android:layout_height="@dimen/design_fab_image_size"
-                        android:id="@+id/widget_button_refresh"
-                        android:background="@drawable/ic_refresh"/>
-                <ProgressBar
-                        android:id="@+id/progress_spinner"
-                        android:layout_width="@dimen/design_fab_image_size"
-                        android:layout_height="@dimen/design_fab_image_size"
-                        android:indeterminate="true" />
-            </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical" android:gravity="bottom"
-                android:transitionGroup="false">
-
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+        >
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="end">
+                    android:orientation="vertical"
+                    android:measureWithLargestChild="false" android:longClickable="false">
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Updated "
-                        android:layout_gravity="bottom"
-                        android:textSize="14sp"
-                        android:textColor="@color/colorText"
+                        android:text="00:00"
+                        android:id="@+id/marsTime"
+                        android:textColor="#eeeeee"
                         android:shadowColor="#424242"
                         android:shadowDx="1"
-                        android:shadowDy="1"
-                        android:shadowRadius="1"/>
-                <TextView
-                        android:layout_width="wrap_content"
+                        android:shadowDy="2"
+                        android:shadowRadius="2"
+                        android:textSize="48sp"
+                        android:layout_marginBottom="-6dp" android:layout_marginTop="-6dp"
+                        android:layout_marginLeft="-3dp"/>
+                <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="00/00/00 "
-                        android:id="@+id/textView"
-                        android:layout_gravity="bottom"
-                        android:textSize="14sp"
-                        android:textColor="@color/colorText"
-                        android:shadowColor="#424242"
-                        android:shadowDx="1"
-                        android:shadowDy="1"
-                        android:shadowRadius="1"/>
+                        android:orientation="horizontal">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mars, sol 00.00"
+                            android:id="@+id/marsSol"
+                            android:textColor="#eeeeee"
+                            android:shadowColor="#424242"
+                            android:shadowDx="1"
+                            android:shadowDy="2"
+                            android:shadowRadius="2"
+                            android:textSize="16sp"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="  Month"
+                            android:id="@+id/marsMonth"
+                            android:textColor="#eeeeee"
+                            android:shadowColor="#424242"
+                            android:shadowDx="1"
+                            android:shadowDy="2"
+                            android:shadowRadius="2"
+                            android:textSize="16sp"/>
+
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="end">
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="High "
-                        android:layout_gravity="bottom"
-                        android:textColor="@color/colorText"
-                        android:textSize="24sp"
-                        android:shadowColor="#424242"
-                        android:shadowDx="1"
-                        android:shadowDy="1"
-                        android:shadowRadius="1"/>
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1"
-                        android:id="@+id/textView2"
-                        android:gravity="end"
-                        android:textColor="@color/colorText"
-                        android:shadowColor="#424242"
-                        android:shadowDx="1"
-                        android:shadowDy="1"
-                        android:shadowRadius="1"
-                        android:textSize="36sp"
-                        android:layout_marginBottom="-6dp"
-                        android:layout_marginTop="-6dp"/>
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" Low "
-                        android:layout_gravity="bottom"
-                        android:textColor="@color/colorText"
-                        android:textSize="24sp"
-                        android:shadowColor="#424242"
-                        android:shadowDx="1"
-                        android:shadowDy="1"
-                        android:shadowRadius="1"/>
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1"
-                        android:id="@+id/textView3"
-                        android:gravity="end"
-                        android:textColor="@color/colorText"
-                        android:shadowColor="#424242"
-                        android:shadowDx="1"
-                        android:shadowDy="1"
-                        android:shadowRadius="1"
-                        android:textSize="36sp"
-                        android:layout_marginBottom="-6dp"
-                        android:layout_marginTop="-6dp"/>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" android:gravity="bottom"
+                    android:transitionGroup="false">
 
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="end">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="high "
+                            android:layout_gravity="bottom"
+                            android:textColor="#eeeeee"
+                            android:textSize="16sp"
+                            android:shadowColor="#424242"
+                            android:shadowDx="1"
+                            android:shadowDy="2"
+                            android:shadowRadius="2"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1"
+                            android:id="@+id/textView2"
+                            android:gravity="end"
+                            android:textColor="#eeeeee"
+                            android:shadowColor="#424242"
+                            android:shadowDx="1"
+                            android:shadowDy="2"
+                            android:shadowRadius="2"
+                            android:textSize="36sp" android:layout_marginBottom="-4dp" android:layout_marginTop="-4dp"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="\u2103"
+                            android:layout_gravity="bottom"
+                            android:textColor="#eeeeee"
+                            android:textSize="22sp"
+                            android:shadowColor="#424242"
+                            android:shadowDx="1"
+                            android:shadowDy="2"
+                            android:shadowRadius="2"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" low "
+                            android:layout_gravity="bottom"
+                            android:textColor="#eeeeee"
+                            android:textSize="16sp"
+                            android:shadowColor="#424242"
+                            android:shadowDx="1"
+                            android:shadowDy="2"
+                            android:shadowRadius="2"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1"
+                            android:id="@+id/textView3"
+                            android:gravity="end"
+                            android:textColor="#eeeeee"
+                            android:shadowColor="#424242"
+                            android:shadowDx="1"
+                            android:shadowDy="2"
+                            android:shadowRadius="2"
+                            android:textSize="36sp" android:layout_marginBottom="-4dp" android:layout_marginTop="-4dp"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="\u2103"
+                            android:layout_gravity="bottom"
+                            android:textColor="#eeeeee"
+                            android:textSize="22sp"
+                            android:shadowColor="#424242"
+                            android:shadowDx="1"
+                            android:shadowDy="2"
+                            android:shadowRadius="2"/>
+
+                </LinearLayout>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="end">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Updated "
+                            android:layout_gravity="bottom"
+                            android:textSize="14sp"
+                            android:textColor="#eeeeee"
+                            android:shadowColor="#424242"
+                            android:shadowDx="1"
+                            android:shadowDy="2"
+                            android:shadowRadius="2"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="00/00/00 "
+                            android:id="@+id/textView"
+                            android:layout_gravity="bottom"
+                            android:textSize="14sp"
+                            android:textColor="#eeeeee"
+                            android:shadowColor="#424242"
+                            android:shadowDx="1"
+                            android:shadowDy="2"
+                            android:shadowRadius="2"/>
+                    <ImageButton
+                            android:layout_width="@dimen/design_fab_image_size"
+                            android:layout_height="@dimen/design_fab_image_size"
+                            android:id="@+id/widget_button_refresh"
+                            android:background="@drawable/ic_refresh"/>
+                    <ProgressBar
+                            android:id="@+id/progress_spinner"
+                            android:layout_width="@dimen/design_fab_image_size"
+                            android:layout_height="@dimen/design_fab_image_size"
+                            android:visibility="gone"
+                            android:indeterminate="true" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
+</FrameLayout>

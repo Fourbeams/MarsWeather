@@ -21,6 +21,7 @@ public class MarsWeatherContentProvider extends ContentProvider {
     public static final String TERRESTRIAL_DATE = "terrestrial_date";
     public static final String MIN_TEMP_C = "min_temp_c";
     public static final String MAX_TEMP_C = "max_temp_c";
+    public static final String SEASON = "season";
 
     //projection
     public static final String[] TEMPERATURE_PROJECTION = new String[]{
@@ -28,6 +29,7 @@ public class MarsWeatherContentProvider extends ContentProvider {
         MarsWeatherContentProvider.TERRESTRIAL_DATE,
         MarsWeatherContentProvider.MIN_TEMP_C,
         MarsWeatherContentProvider.MAX_TEMP_C,
+        MarsWeatherContentProvider.SEASON,
     };
 
     //data URIs
@@ -43,13 +45,14 @@ public class MarsWeatherContentProvider extends ContentProvider {
     private SQLiteDatabase db;
     static final String DATABASE_NAME = "MarsWeatherBD";
     static final String TABLE_NAME = "temperature";
-    static final int DATABASE_VERSION = 7;
+    static final int DATABASE_VERSION = 8;
     static final String CREATE_DB_TABLE =
         " CREATE TABLE " + TABLE_NAME +
         " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
         " terrestrial_date STRING, " +
         " min_temp_c DOUBLE NOT NULL, " +
-        " max_temp_c DOUBLE NOT NULL); ";
+        " max_temp_c DOUBLE NOT NULL, " +
+        " season STRING NOT NULL); ";
 
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
