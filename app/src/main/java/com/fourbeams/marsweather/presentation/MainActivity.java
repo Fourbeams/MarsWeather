@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         dateAndTimeUtil = new DateAndTimeUtil();
         TextView sol = (TextView) findViewById(R.id.activityMarsSol);
         //TextView marsTime = (TextView) findViewById(R.id.marsTime);
-        sol.setText(dateAndTimeUtil.getMarsSol() + "  ");
+        sol.setText(" " + dateAndTimeUtil.getMarsSol() + "  ");
         //marsTime.setText(dateAndTimeUtil.getMarsTime());
 
         final TextView marsTimeView = (TextView) findViewById(R.id.marsTime);
@@ -151,17 +151,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             final TextView seasonView = (TextView)findViewById(R.id.marsMonth);
             terrestrialDateView.post(new Runnable() {
                 public void run() {
-                    terrestrialDateView.setText(terrestrialDate);
+                    terrestrialDateView.setText("  " + terrestrialDate);
                 }
             });
             minTempView.post(new Runnable() {
                 public void run() {
-                    minTempView.setText(minTemp);
+                    minTempView.setText(" " + minTemp);
                 }
             });
             maxTempView.post(new Runnable() {
                 public void run() {
-                    maxTempView.setText(maxTemp);
+                    maxTempView.setText(" " + maxTemp);
                 }
             });
             seasonView.post(new Runnable() {

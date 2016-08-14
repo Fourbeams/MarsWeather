@@ -92,9 +92,9 @@ public class MyWidgetProvider extends AppWidgetProvider {
                 Integer maxTempCInContentProvider = cursor.getInt(cursor.getColumnIndex(MarsWeatherContentProvider.MAX_TEMP_C));
                 Integer minTempCInContentProvider = cursor.getInt(cursor.getColumnIndex(MarsWeatherContentProvider.MIN_TEMP_C));
                 String seasonInContentProvider = cursor.getString(cursor.getColumnIndex(MarsWeatherContentProvider.SEASON));
-                remoteViews.setTextViewText(R.id.textView, latestDateInContentProvider);
-                remoteViews.setTextViewText(R.id.textView2, String.valueOf(maxTempCInContentProvider));
-                remoteViews.setTextViewText(R.id.textView3, String.valueOf(minTempCInContentProvider));
+                remoteViews.setTextViewText(R.id.textView, " " + latestDateInContentProvider);
+                remoteViews.setTextViewText(R.id.textView2, " " + String.valueOf(maxTempCInContentProvider));
+                remoteViews.setTextViewText(R.id.textView3, " " + String.valueOf(minTempCInContentProvider));
                 remoteViews.setTextViewText(R.id.marsMonth, seasonInContentProvider);
                 remoteViews.setTextViewText(R.id.marsTime, dateAndTimeUtil.getMarsTime());
                 remoteViews.setTextViewText(R.id.marsSol, "Sol " + dateAndTimeUtil.getMarsSol() + "  ");

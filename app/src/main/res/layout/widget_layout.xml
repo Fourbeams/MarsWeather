@@ -27,7 +27,6 @@
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="00:00"
                         android:id="@+id/marsTime"
                         android:textColor="#eeeeee"
                         android:shadowColor="#424242"
@@ -44,7 +43,6 @@
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Mars, sol 00.00"
                             android:id="@+id/marsSol"
                             android:textColor="#eeeeee"
                             android:shadowColor="#424242"
@@ -55,7 +53,6 @@
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="  Month"
                             android:id="@+id/marsMonth"
                             android:textColor="#eeeeee"
                             android:shadowColor="#424242"
@@ -81,7 +78,7 @@
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="high "
+                            android:text="@string/high"
                             android:layout_gravity="bottom"
                             android:textColor="#eeeeee"
                             android:textSize="16sp"
@@ -92,7 +89,6 @@
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1"
                             android:id="@+id/textView2"
                             android:gravity="end"
                             android:textColor="#eeeeee"
@@ -104,7 +100,7 @@
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="\u2103"
+                            android:text="@string/gradus"
                             android:layout_gravity="bottom"
                             android:textColor="#eeeeee"
                             android:textSize="22sp"
@@ -115,7 +111,13 @@
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=" low "
+                            android:text=" "
+                            android:layout_gravity="bottom"
+                            android:textSize="16sp"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/low"
                             android:layout_gravity="bottom"
                             android:textColor="#eeeeee"
                             android:textSize="16sp"
@@ -126,7 +128,6 @@
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1"
                             android:id="@+id/textView3"
                             android:gravity="end"
                             android:textColor="#eeeeee"
@@ -138,7 +139,7 @@
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="\u2103"
+                            android:text="@string/gradus"
                             android:layout_gravity="bottom"
                             android:textColor="#eeeeee"
                             android:textSize="22sp"
@@ -156,7 +157,7 @@
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Updated "
+                            android:text="@string/updated"
                             android:layout_gravity="bottom"
                             android:textSize="14sp"
                             android:textColor="#eeeeee"
@@ -167,7 +168,6 @@
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="00/00/00 "
                             android:id="@+id/textView"
                             android:layout_gravity="bottom"
                             android:textSize="14sp"

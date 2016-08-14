@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">MarsWeather</string>
     <string name="action_settings">Settings</string>
+    <string name="low">low</string>
+    <string name="high">high</string>
+    <string name="activityLow">Low</string>
+    <string name="activityHigh">High</string>
+    <string name="updated">Updated</string>
+    <string name="mars">MARS</string>
+    <string name="sol">Sol</string>
+    <string name="gradus">\u2103</string>
 </resources>

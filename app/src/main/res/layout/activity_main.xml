@@ -27,21 +27,52 @@
                                   android:layout_height="wrap_content"
                                   android:orientation="horizontal" android:gravity="top|right"
                                   android:layout_weight="1">
+
+                        <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/widget_button_refresh"
+                                android:background="@drawable/ic_refresh"
+                                android:focusable="true"/>
+                        <ProgressBar
+                                android:id="@+id/progress_spinner"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:indeterminate="true" />
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="   "
+                                android:textSize="26sp"/>
                         <ImageButton
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/activity_button_info"
-                                android:background="@drawable/ic_information_outline_white_36dp"
+                                android:background="@drawable/ic_information_outline"
                                 android:focusable="true"/>
 
                     </LinearLayout>
                     <LinearLayout android:layout_width="match_parent"
                                   android:layout_height="wrap_content"
-                                  android:orientation="horizontal" android:gravity="right">
+                                  android:orientation="vertical" android:gravity="right" android:layout_weight="1">
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Sol "
+                                android:text="@string/mars"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="32sp"
+                                android:shadowColor="#424242"
+                                android:shadowDx="1"
+                                android:shadowDy="2"
+                                android:shadowRadius="2" android:layout_gravity="center"/>
+                        <LinearLayout android:layout_width="match_parent"
+                                      android:layout_height="wrap_content"
+                                      android:orientation="horizontal"
+                                      android:gravity="center_horizontal">
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/sol"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="18sp"
                                 android:shadowColor="#424242"
@@ -51,7 +82,6 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="00.00"
                                 android:id="@+id/activityMarsSol"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="18sp"
@@ -62,7 +92,6 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Spring, Month 7"
                                 android:id="@+id/marsMonth"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="18sp"
@@ -70,12 +99,14 @@
                                 android:shadowDx="1"
                                 android:shadowDy="2"
                                 android:shadowRadius="2"/>
+                            </LinearLayout>
                         </LinearLayout>
                 </LinearLayout>
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content">
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="00:00"
                         android:id="@+id/marsTime"
                         android:textColor="@color/colorPrimary"
                         android:textSize="48sp" android:layout_weight="1"
@@ -85,6 +116,7 @@
                         android:shadowDx="1"
                         android:shadowDy="2"
                         android:shadowRadius="2"/>
+                 </LinearLayout>
         <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
@@ -96,7 +128,7 @@
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Low "
+                            android:text="@string/activityLow"
                             android:textColor="@color/colorPrimary"
                             android:textSize="24sp"
                             android:shadowColor="#424242"
@@ -106,7 +138,6 @@
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="..0"
                             android:id="@+id/min_temp_c_activity"
                             android:textColor="@color/colorPrimary"
                             android:textSize="36sp"
@@ -117,7 +148,7 @@
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=" \u2103"
+                            android:text="@string/gradus"
                             android:textColor="@color/colorPrimary"
                             android:textSize="22sp"
                             android:shadowColor="#424242"
@@ -132,7 +163,7 @@
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="High "
+                        android:text="@string/activityHigh"
                         android:textColor="@color/colorPrimary"
                         android:textSize="24sp"
                         android:shadowColor="#424242"
@@ -142,7 +173,6 @@
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="..0"
                         android:id="@+id/max_temp_c_activity"
                         android:textColor="@color/colorPrimary"
                         android:textSize="36sp"
@@ -153,7 +183,7 @@
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" \u2103"
+                        android:text="@string/gradus"
                         android:textColor="@color/colorPrimary"
                         android:textSize="22sp"
                         android:shadowColor="#424242"
@@ -163,34 +193,35 @@
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="end" android:layout_weight="1">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+            <LinearLayout android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal" android:gravity="left"
+                          android:layout_gravity="left|bottom" android:layout_weight="1">
                 <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/terrestrial_date_activity"
-                        android:text="Updated at 00/00 00:00 "
-                        android:textSize="16sp"
+                        android:layout_height="32dp"
+                        android:text="@string/updated"
+                        android:textSize="18sp"
                         android:textColor="@color/colorPrimary"
-                        android:layout_gravity="bottom"
                         android:shadowColor="#424242"
                         android:shadowDx="1"
                         android:shadowDy="2"
-                        android:shadowRadius="2"/>
-                <ImageButton
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:id="@+id/widget_button_refresh"
-                        android:background="@drawable/ic_refresh" android:layout_gravity="bottom"
-                        android:focusable="true"/>
-                <ProgressBar
-                        android:id="@+id/progress_spinner"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:indeterminate="true" />
-
+                        android:shadowRadius="2" android:gravity="bottom"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:id="@+id/terrestrial_date_activity"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorPrimary"
+                        android:shadowColor="#424242"
+                        android:shadowDx="1"
+                        android:shadowDy="2"
+                        android:shadowRadius="2" android:gravity="bottom"/>
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

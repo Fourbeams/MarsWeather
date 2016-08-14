@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MarsWeather</string>
+    <string name="activityHigh">Макс.</string>
+    <string name="activityLow">Мин.</string>
+    <string name="gradus">\u2103</string>
+    <string name="high">макс.</string>
+    <string name="low">мин.</string>
+    <string name="mars">МАРС</string>
+    <string name="sol">Сол</string>
+    <string name="updated">Обновлено</string>
+    <string name="action_settings">Настройки</string>
+</resources>
