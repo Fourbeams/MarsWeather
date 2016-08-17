@@ -28,6 +28,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/marsTime"
+                        android:text="..."
                         android:textColor="#eeeeee"
                         android:shadowColor="#424242"
                         android:shadowDx="1"
@@ -68,8 +69,6 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical" android:gravity="bottom"
                     android:transitionGroup="false">
-
-
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

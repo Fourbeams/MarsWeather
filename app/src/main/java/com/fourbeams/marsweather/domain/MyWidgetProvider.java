@@ -28,11 +28,12 @@ public class MyWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // obtaining new data from server
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-       // displayLoadingIndicator(remoteViews);
+        //displayLoadingIndicator(remoteViews);
         ServiceHelper.getInstance(context.getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
         for (int i = 0; i < appWidgetIds.length; i++) {
 
             // open main activity when widget area clicked
+            displayLoadingIndicator(remoteViews);
             Intent startMainActivityIntent = new Intent(context, MainActivity.class);
             PendingIntent startMainActivityPendingIntent = PendingIntent.getActivity(context, 0, startMainActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.widget_top_layout, startMainActivityPendingIntent);
@@ -53,8 +54,8 @@ public class MyWidgetProvider extends AppWidgetProvider {
         super.onEnabled(context);
         Intent intent = new Intent(context, MyWidgetProvider.class);
         intent.setAction(DATA_CHANGED_IN_PROVIDER);
-        //RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-        //displayLoadingIndicator(remoteViews);
+       // RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+       // displayLoadingIndicator(remoteViews);
         AlarmManager aManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
         aManager.setRepeating(aManager.RTC, System.currentTimeMillis(), 5000, pi);

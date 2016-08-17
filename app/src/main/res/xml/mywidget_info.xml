@@ -3,7 +3,8 @@
         android:minWidth="250dp"
         android:minHeight="110dp"
         android:updatePeriodMillis="14400000"
-        android:initialLayout="@layout/widget_layout">
+        android:initialLayout="@layout/widget_layout"
+        android:previewImage="@drawable/marspreview">
 </appwidget-provider>
 
         <!--android:minResizeHeight="55dp"-->
