@@ -209,8 +209,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // previously invisible view
         View myView = findViewById(R.id.info_layout);
         // get the center for the clipping circle
-        //int cx = (myView.getLeft() + myView.getRight()) / 2;
-        //int cy = (myView.getTop() + myView.getBottom()) / 2;
         ImageButton infoButtonView = (ImageButton) findViewById(R.id.activity_button_info);
         int cx = infoButtonView.getRight();
         int cy = infoButtonView.getBottom();
