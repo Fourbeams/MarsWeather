@@ -16,6 +16,8 @@ import com.fourbeams.marsweather.R;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
 import com.fourbeams.marsweather.presentation.MainActivity;
 
+import static android.content.Intent.ACTION_TIME_TICK;
+
 public class MyWidgetProvider extends AppWidgetProvider {
 
     private final String UPDATE_TEMPERATURE_BUTTON_PRESSED
@@ -28,7 +30,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // obtaining new data from server
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-        //displayLoadingIndicator(remoteViews);
+       // displayLoadingIndicator(remoteViews);
         ServiceHelper.getInstance(context.getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
         for (int i = 0; i < appWidgetIds.length; i++) {
 
@@ -54,11 +56,10 @@ public class MyWidgetProvider extends AppWidgetProvider {
         super.onEnabled(context);
         Intent intent = new Intent(context, MyWidgetProvider.class);
         intent.setAction(DATA_CHANGED_IN_PROVIDER);
-       // RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-       // displayLoadingIndicator(remoteViews);
-        AlarmManager aManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+
+        /*AlarmManager aManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
-        aManager.setRepeating(aManager.RTC, System.currentTimeMillis(), 5000, pi);
+        aManager.setRepeating(aManager.RTC, System.currentTimeMillis(), 5000, pi);*/
         context.sendBroadcast(intent);
     }
 
@@ -77,7 +78,8 @@ public class MyWidgetProvider extends AppWidgetProvider {
         }
         // if data changed at provider
         if (intent.getAction().equals(DATA_CHANGED_IN_PROVIDER) ||
-                intent.getAction().equals(Processor.PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER)) {
+                intent.getAction().equals(Processor.PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER) ||
+                intent.getAction().equals(ACTION_TIME_TICK)) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int [] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, MyWidgetProvider.class));
