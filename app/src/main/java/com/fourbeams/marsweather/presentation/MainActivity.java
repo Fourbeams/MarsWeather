@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        ImageButton infoButton = (ImageButton) findViewById(R.id.activity_button_info);
+        /*ImageButton infoButton = (ImageButton) findViewById(R.id.activity_button_info);
         infoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onClick(View view) {
                 playHideViewAnimation(view);
             }
-        });
+        });*/
 
         marsWeatherContentProviderObserver = new MarsWeatherContentProviderObserver(new Handler());
         dateAndTimeUtil = new DateAndTimeUtil();
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         findViewById(R.id.widget_button_refresh).setVisibility(View.GONE);
     }
 
-    private void playShowViewAnimation(){
+/*    private void playShowViewAnimation(){
         // previously invisible view
         View myView = findViewById(R.id.info_layout);
         // get the center for the clipping circle
@@ -242,6 +242,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         });
         // start the animation
         anim.start();
-    }
+    }*/
 
 }

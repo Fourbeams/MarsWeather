@@ -63,13 +63,13 @@
                                 android:text="   "
                                 android:textSize="26sp" android:layout_gravity="center_horizontal"
                         />
-                        <ImageButton
+<!--                        <ImageButton
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/activity_button_info"
                                 android:background="@drawable/ic_information_outline"
                                 android:focusable="true" android:layout_gravity="center_horizontal"
-                        />
+                        />-->
 
                     </LinearLayout>
                 </LinearLayout>
