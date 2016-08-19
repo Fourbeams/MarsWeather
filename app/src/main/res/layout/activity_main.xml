@@ -19,7 +19,7 @@
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" android:gravity="bottom|right" android:background="#D84315"
+                        android:orientation="horizontal" android:gravity="bottom|right" android:background="@color/toolBarColor"
                         android:paddingLeft="@dimen/activity_horizontal_margin">
                     <LinearLayout android:layout_width="wrap_content"
                                   android:layout_height="match_parent"
@@ -43,33 +43,22 @@
                                   android:paddingLeft="@dimen/activity_horizontal_margin"
                                   android:paddingRight="@dimen/activity_horizontal_margin"
                                   android:paddingBottom="8dp"
-                                  android:layout_gravity="center_vertical" android:paddingTop="8dp">>
+                                  android:layout_gravity="center_vertical"
+                                  android:paddingTop="8dp">>
 
                         <ImageButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
                                 android:id="@+id/widget_button_refresh"
                                 android:background="@drawable/ic_refresh"
                                 android:focusable="true"/>
                         <ProgressBar
                                 android:id="@+id/progress_spinner"
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:indeterminate="true" android:layout_gravity="center_horizontal"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:indeterminate="true"
+                                android:layout_gravity="center_horizontal"
                         />
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="   "
-                                android:textSize="26sp" android:layout_gravity="center_horizontal"
-                        />
-<!--                        <ImageButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/activity_button_info"
-                                android:background="@drawable/ic_information_outline"
-                                android:focusable="true" android:layout_gravity="center_horizontal"
-                        />-->
 
                     </LinearLayout>
                 </LinearLayout>
@@ -109,7 +98,7 @@
                                     android:layout_height="match_parent"
                                     android:text="@string/sol"
                                     android:textColor="@color/colorPrimary"
-                                    android:textSize="18sp"
+                                    android:textSize="20sp"
                                     android:shadowColor="#424242"
                                     android:shadowDx="1"
                                     android:shadowDy="2"
@@ -120,7 +109,7 @@
                                     android:layout_height="wrap_content"
                                     android:id="@+id/activityMarsSol"
                                     android:textColor="@color/colorPrimary"
-                                    android:textSize="18sp"
+                                    android:textSize="20sp"
                                     android:shadowColor="#424242"
                                     android:shadowDx="1"
                                     android:shadowDy="2"
@@ -136,7 +125,7 @@
                                     android:layout_height="match_parent"
                                     android:id="@+id/marsMonth"
                                     android:textColor="@color/colorPrimary"
-                                    android:textSize="18sp"
+                                    android:textSize="20sp"
                                     android:shadowColor="#424242"
                                     android:shadowDx="1"
                                     android:shadowDy="2"
@@ -149,13 +138,13 @@
                 <LinearLayout android:layout_width="wrap_content"
                               android:layout_height="match_parent"
                               android:orientation="horizontal" android:layout_weight="1"
-                              android:paddingRight="20dp">
+                              android:paddingRight="20dp" android:paddingTop="10dp">
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:text="@string/activityLow"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="18sp"
+                            android:textSize="20sp"
                             android:shadowColor="#424242"
                             android:shadowDx="1"
                             android:shadowDy="2"
@@ -165,7 +154,7 @@
                             android:layout_height="match_parent"
                             android:id="@+id/min_temp_c_activity"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="28sp"
+                            android:textSize="24sp"
                             android:shadowColor="#424242"
                             android:shadowDx="1"
                             android:shadowDy="2"
@@ -186,13 +175,13 @@
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent" android:layout_weight="1"
-                        android:gravity="center_vertical" android:paddingLeft="20dp">
+                        android:gravity="center_vertical" android:paddingLeft="20dp" android:paddingTop="10dp">
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:text="@string/activityHigh"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="18sp"
+                            android:textSize="20sp"
                             android:shadowColor="#424242"
                             android:shadowDx="1"
                             android:shadowDy="2"
@@ -202,7 +191,7 @@
                             android:layout_height="match_parent"
                             android:id="@+id/max_temp_c_activity"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="28sp"
+                            android:textSize="24sp"
                             android:shadowColor="#424242"
                             android:shadowDx="1"
                             android:shadowDy="2"
@@ -237,31 +226,25 @@
                         android:layout_width="wrap_content"
                         android:layout_height="32dp"
                         android:text="@string/temUpdated"
-                        android:textSize="16sp"
+                        android:textSize="12sp"
                         android:textColor="@color/colorPrimary"
                         android:shadowColor="#424242"
                         android:shadowDx="1"
                         android:shadowDy="2"
-                        android:shadowRadius="2" android:gravity="bottom"/>
+                        android:shadowRadius="2" android:gravity="bottom" android:textIsSelectable="false"/>
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="32dp"
                         android:id="@+id/terrestrial_date_activity"
-                        android:textSize="16sp"
+                        android:textSize="12sp"
                         android:textColor="@color/colorPrimary"
                         android:shadowColor="#424242"
                         android:shadowDx="1"
                         android:shadowDy="2"
-                        android:shadowRadius="2" android:gravity="bottom"/>
+                        android:shadowRadius="2" android:gravity="bottom" android:textIsSelectable="false"/>
             </LinearLayout>
         </LinearLayout>
 
-    </LinearLayout>
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" android:background="#ffffff" android:id="@+id/info_layout"
-            android:visibility="invisible">
     </LinearLayout>
 </FrameLayout>
 
