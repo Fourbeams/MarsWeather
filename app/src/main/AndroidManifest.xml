@@ -13,7 +13,8 @@
         <activity
                 android:name="com.fourbeams.marsweather.presentation.MainActivity"
                 android:label="@string/app_name"
-                android:theme="@style/AppTheme">
+                android:theme="@style/AppTheme"
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

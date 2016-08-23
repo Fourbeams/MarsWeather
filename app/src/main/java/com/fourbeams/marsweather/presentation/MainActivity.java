@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final int TEMPERATURE_LOADER = 0;
     private MarsWeatherContentProviderObserver marsWeatherContentProviderObserver;
-    private DateAndTimeUtil dateAndTimeUtil;
+    //private DateAndTimeUtil dateAndTimeUtil;
     private BroadcastReceiver sysTimeChangeBroadcastReceiver;
 
     @Override
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         });
 
         marsWeatherContentProviderObserver = new MarsWeatherContentProviderObserver(new Handler());
-        dateAndTimeUtil = new DateAndTimeUtil();
+        final DateAndTimeUtil dateAndTimeUtil = DateAndTimeUtil.getInstance();
         TextView sol = (TextView) findViewById(R.id.activityMarsSol);
         sol.setText(" " + dateAndTimeUtil.getMarsSol() + "  ");
 

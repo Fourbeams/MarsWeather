@@ -6,7 +6,14 @@ import java.util.TimeZone;
 
 public class DateAndTimeUtil {
 
-    public DateAndTimeUtil(){}
+    private final static DateAndTimeUtil INSTANCE = new DateAndTimeUtil();
+
+    private DateAndTimeUtil(){
+    }
+
+    public static DateAndTimeUtil getInstance(){
+        return INSTANCE;
+    }
 
     private double marsSolDateCalculating(){
         Date date = new Date();
@@ -28,7 +35,5 @@ public class DateAndTimeUtil {
         long marsTimeMillis = (long) (marsTimeHours * 3600 * 1000);
         return dateFormat.format(new Date(marsTimeMillis));
     }
-
-
 
 }
