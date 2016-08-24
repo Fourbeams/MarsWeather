@@ -135,6 +135,9 @@ public class MyWidgetProvider extends AppWidgetProvider {
             remoteViews.setTextViewText(R.id.marsSol, "Sol " + dateAndTimeUtil.getMarsSol() + "  ");
             for (int i=0; i<appWidgetIds.length; i++) {
                 hideLoadingIndicator(remoteViews);
+                // 2 lines below fixes issue when periodically Android kills app's process
+                setOpenActivityWhenClicked(context, remoteViews); // open main activity when widget area clicked
+                setRefreshWhenButtonClicked(context, remoteViews, appWidgetIds, i); // set onClick listener to refresh button
                 appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
             }
         }
