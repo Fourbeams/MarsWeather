@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#EEEEEE</color>
-<!--    <color name="colorPrimaryDark">#BF360C</color>-->
     <color name="colorPrimaryDark">#BF360C</color>
-    <color name="toolBarColor">#D84315</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorText">#EEEEEE</color>
+    <color name="windowBackground">#F57F17</color>
+    <color name="colorPrimary">#D84315</color>
+    <color name="colorTextPrimary">#EEEEEE</color>
 </resources>

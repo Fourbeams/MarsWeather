@@ -7,7 +7,12 @@
     <string name="activityHigh">High</string>
     <string name="updated">temp updated</string>
     <string name="temUpdated">Temperature updated</string>
-    <string name="mars">The Mars planet</string>
+    <string name="mars">The planet Mars</string>
     <string name="sol">Sol</string>
-    <string name="gradus">\u2103</string>
+    <string name="celsius_degree">\u2103</string>
+    <string name="activityImgView">Martian landscape</string>
+    <string name="widgetImgView">Martian landscape</string>
+    <string name="refreshButtonImg">Refresh button</string>
+    <string name="loading">&#8230;</string>
+    <string name="space">&#160;</string>
 </resources>
