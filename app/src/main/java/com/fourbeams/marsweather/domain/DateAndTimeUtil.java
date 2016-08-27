@@ -8,32 +8,32 @@ public class DateAndTimeUtil {
 
     private final static DateAndTimeUtil INSTANCE = new DateAndTimeUtil();
 
-    private DateAndTimeUtil(){
-    }
+    private DateAndTimeUtil(){}
 
     public static DateAndTimeUtil getInstance(){
         return INSTANCE;
     }
 
-    private double marsSolDateCalculating(){
-        Date date = new Date();
-        double currentData = date.getTime()/1000;
-        double marsSolDate = (((currentData+36)/88775.244147)+34127.2954262);
-        return marsSolDate;
-    }
-
     public String getMarsSol(){
-        long marsSol = (long) marsSolDateCalculating();
+        long marsSol = (long) currentMarsSolCalculating();
         return Long.toString(marsSol);
     }
 
     public String getMarsTime(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
         dateFormat.setTimeZone(TimeZone.getTimeZone("general time zones "));
-        double marsSolDate = marsSolDateCalculating();
+        double marsSolDate = currentMarsSolCalculating();
         double marsTimeHours = (marsSolDate * 24) % 24;
         long marsTimeMillis = (long) (marsTimeHours * 3600 * 1000);
         return dateFormat.format(new Date(marsTimeMillis));
+    }
+
+    private double currentMarsSolCalculating(){
+        Date date = new Date();
+        double currentTerrestrialDate = date.getTime() / 1000;
+        //returning current Mars sol
+        double currentMarsSol = (((currentTerrestrialDate + 36) / 88775.244147) + 34127.2954262);
+        return currentMarsSol;
     }
 
 }

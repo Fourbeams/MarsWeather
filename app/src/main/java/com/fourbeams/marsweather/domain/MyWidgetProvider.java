@@ -26,12 +26,29 @@ public class MyWidgetProvider extends AppWidgetProvider {
             = "com.fourbeams.marsweather.intent.action.DATA_CHANGED_IN_PROVIDER";
 
     @Override
+    public void onReceive(Context context, Intent intent) {
+        // if the button to update data from server where pressed
+        if (intent.getAction().equals(UPDATE_TEMPERATURE_BUTTON_PRESSED)) {
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+            displayLoadingIndicator(remoteViews);
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            ServiceHelper.getInstance(context.getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
+            appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+        }
+        // if data changed at provider or processor responded with no data changes at content provider
+        if (intent.getAction().equals(DATA_CHANGED_IN_PROVIDER) ||
+                intent.getAction().equals(Processor.PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER)) {
+            loadDataFromProvider(context);
+        }
+        super.onReceive(context, intent);
+    }
+
+    @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Log.d ("TAG", "onUpdate called");
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
         // obtaining new data from server
-/*        ServiceHelper.getInstance(context.getApplicationContext())
-                .runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);*/
         ServiceHelper.getInstance(context).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
         for (int i = 0; i < appWidgetIds.length; i++) {
             displayLoadingIndicator(remoteViews);
@@ -62,51 +79,11 @@ public class MyWidgetProvider extends AppWidgetProvider {
     private void setAlarmManager(Context context){
         Intent intent = new Intent(context, MyWidgetProvider.class);
         intent.setAction(DATA_CHANGED_IN_PROVIDER);
-        // force update widget when just created
-        //context.sendBroadcast(intent);
         // force sending intents that data changed at provider periodically via alarm manager
         AlarmManager aManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
         final int UPDATE_PERIOD = 5000;
         aManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), UPDATE_PERIOD, pi);
-    }
-/*
-    @Override
-    public void onEnabled(Context context) {
-        super.onEnabled(context);
-        Log.d ("TAG", "onEnabled called");
-        // getting data from provider
-        loadDataFromProvider(context);
-        Log.d ("TAG", "onEnabled: loadDataFromProvider complete");
-        Intent intent = new Intent(context, MyWidgetProvider.class);
-        intent.setAction(DATA_CHANGED_IN_PROVIDER);
-        // force update widget when just created
-        //context.sendBroadcast(intent);
-        // force sending intents that data changed at provider periodically via alarm manager
-        AlarmManager aManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
-        final int UPDATE_PERIOD = 5000;
-        aManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), UPDATE_PERIOD, pi);
-
-    }
-*/
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        // if the button to update data from server where pressed
-        if (intent.getAction().equals(UPDATE_TEMPERATURE_BUTTON_PRESSED)) {
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-            displayLoadingIndicator(remoteViews);
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-            ServiceHelper.getInstance(context.getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
-            appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-        }
-        // if data changed at provider or processor responded with no data changes at content provider
-        if (intent.getAction().equals(DATA_CHANGED_IN_PROVIDER) ||
-                intent.getAction().equals(Processor.PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER)) {
-            loadDataFromProvider(context);
-        }
-        super.onReceive(context, intent);
     }
 
     private void loadDataFromProvider(Context context){
@@ -133,7 +110,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
             DateAndTimeUtil dateAndTimeUtil = DateAndTimeUtil.getInstance();
             remoteViews.setTextViewText(R.id.marsTime, dateAndTimeUtil.getMarsTime());
             remoteViews.setTextViewText(R.id.marsSol, "Sol " + dateAndTimeUtil.getMarsSol() + "  ");
-            for (int i=0; i<appWidgetIds.length; i++) {
+            for (int i = 0; i < appWidgetIds.length; i++) {
                 hideLoadingIndicator(remoteViews);
                 appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
             }

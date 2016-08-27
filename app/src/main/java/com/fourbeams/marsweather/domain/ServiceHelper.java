@@ -12,7 +12,7 @@ import java.util.Set;
 public class ServiceHelper {
 
     private final static ServiceHelper INSTANCE = new ServiceHelper();
-    private static Context mContext;
+    private static Context context;
     private Set <String> runningServicesPool = new HashSet <>();
 
     public enum task{
@@ -27,7 +27,7 @@ public class ServiceHelper {
     private ServiceHelper(){}
 
     public static ServiceHelper getInstance(Context context) {
-        if (mContext == null) mContext = context;
+        if (ServiceHelper.context == null) ServiceHelper.context = context;
         return INSTANCE;
     }
 
@@ -38,18 +38,18 @@ public class ServiceHelper {
         }
     }
 
-    public void removeServiceFromPool(task task){
+    void removeServiceFromPool(task task){
         String key = task.toString();
         runningServicesPool.remove(key);
     }
 
     private void startGetService(task task){
-        String taskKey = task.GET_NEW_WEATHER_DATA_FROM_SERVER.toString();
+        String taskKey = task.toString();
         if (!runningServicesPool.contains(taskKey)) {
             runningServicesPool.add(taskKey);
-            Intent startServiceIntent = new Intent(mContext, GetService.class);
+            Intent startServiceIntent = new Intent(context, GetService.class);
             startServiceIntent.putExtra("TASK", taskKey);
-            mContext.startService(startServiceIntent);
+            context.startService(startServiceIntent);
         }
     }
 }

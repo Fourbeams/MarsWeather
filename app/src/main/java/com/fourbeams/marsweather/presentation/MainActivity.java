@@ -24,8 +24,31 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final int TEMPERATURE_LOADER = 0;
     private MarsWeatherContentProviderObserver marsWeatherContentProviderObserver;
-    //private DateAndTimeUtil dateAndTimeUtil;
     private BroadcastReceiver sysTimeChangeBroadcastReceiver;
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            hideLoadingIndicator();
+        }
+    };
+
+    private class MarsWeatherContentProviderObserver extends ContentObserver {
+        MarsWeatherContentProviderObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            this.onChange(selfChange, null);
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            displayLoadingIndicator();
+            getLoaderManager().getLoader(TEMPERATURE_LOADER).forceLoad();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +98,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ServiceHelper.getInstance(getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
     }
 
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            hideLoadingIndicator();
-        }
-    };
-
     @Override
     protected void onPause (){
         super.onPause();
@@ -100,23 +116,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 new IntentFilter(Processor.PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER));
         getLoaderManager().initLoader(TEMPERATURE_LOADER, null, this).forceLoad();
         registerReceiver(sysTimeChangeBroadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
-    }
-
-    private class MarsWeatherContentProviderObserver extends ContentObserver {
-        public MarsWeatherContentProviderObserver(Handler handler) {
-            super(handler);
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            this.onChange(selfChange, null);
-        }
-
-        @Override
-        public void onChange(boolean selfChange, Uri uri) {
-            displayLoadingIndicator();
-            getLoaderManager().getLoader(TEMPERATURE_LOADER).forceLoad();
-        }
     }
 
     @Override
@@ -175,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader loader) {}
 
-    public void hideLoadingIndicator(){
+    private void hideLoadingIndicator(){
         findViewById(R.id.progress_spinner).setVisibility(View.GONE);
         findViewById(R.id.widget_button_refresh).setVisibility(View.VISIBLE);
     }

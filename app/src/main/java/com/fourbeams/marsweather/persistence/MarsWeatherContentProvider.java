@@ -7,17 +7,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.fourbeams.marsweather.domain.MyWidgetProvider;
 
+@SuppressWarnings("ConstantConditions")
 public class MarsWeatherContentProvider extends ContentProvider {
 
     public static final String PROVIDER_NAME = "com.fourbeams.marsweather.persistence.MarsWeatherContentProvider";
-    static final String URL = "content://" + PROVIDER_NAME + "/temperature";
+    private static final String URL = "content://" + PROVIDER_NAME + "/temperature";
     public static final Uri CONTENT_URI = Uri.parse(URL);
 
     //fields in DB
-    public static final String _ID = "_id";
+    private static final String _ID = "_id";
     public static final String TERRESTRIAL_DATE = "terrestrial_date";
     public static final String MIN_TEMP_C = "min_temp_c";
     public static final String MAX_TEMP_C = "max_temp_c";
@@ -33,9 +35,9 @@ public class MarsWeatherContentProvider extends ContentProvider {
     };
 
     //data URIs
-    static final int TEMPERATURE = 1;
-    static final int TEMPERATURE_LAST_DATE = 2;
-    static final UriMatcher uriMatcher;
+    private static final int TEMPERATURE = 1;
+    private static final int TEMPERATURE_LAST_DATE = 2;
+    private static final UriMatcher uriMatcher;
     static{
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(PROVIDER_NAME, "temperature", TEMPERATURE);
@@ -43,10 +45,10 @@ public class MarsWeatherContentProvider extends ContentProvider {
     }
 
     private SQLiteDatabase db;
-    static final String DATABASE_NAME = "MarsWeatherBD";
-    static final String TABLE_NAME = "temperature";
-    static final int DATABASE_VERSION = 8;
-    static final String CREATE_DB_TABLE =
+    private static final String DATABASE_NAME = "MarsWeatherBD";
+    private static final String TABLE_NAME = "temperature";
+    private static final int DATABASE_VERSION = 8;
+    private static final String CREATE_DB_TABLE =
         " CREATE TABLE " + TABLE_NAME +
         " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
         " terrestrial_date STRING, " +
@@ -82,7 +84,7 @@ public class MarsWeatherContentProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor c;
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(TABLE_NAME);
@@ -111,7 +113,7 @@ public class MarsWeatherContentProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         switch (uriMatcher.match(uri)){
             case TEMPERATURE:
                 return "vnd.android.cursor.dir/vnd.com.fourbeams.marsweather.persistence.temperature";
@@ -124,7 +126,7 @@ public class MarsWeatherContentProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
+    public Uri insert(@NonNull Uri uri, ContentValues contentValues) {
         long rowID = db.insert(TABLE_NAME, "", contentValues);
         if (rowID > 0) {
             Uri _uri = ContentUris.withAppendedId(CONTENT_URI, rowID);
@@ -136,8 +138,8 @@ public class MarsWeatherContentProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String s, String[] strings) {
-        int count = 0;
+    public int delete(@NonNull Uri uri, String s, String[] strings) {
+        int count;
         switch (uriMatcher.match(uri)){
             case TEMPERATURE:
                 count = db.delete(TABLE_NAME, s, strings);
@@ -151,8 +153,8 @@ public class MarsWeatherContentProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
-        int count = 0;
+    public int update(@NonNull Uri uri, ContentValues contentValues, String s, String[] strings) {
+        int count;
         switch (uriMatcher.match(uri)){
             case TEMPERATURE:
                 count = db.update(TABLE_NAME, contentValues, s, strings);
