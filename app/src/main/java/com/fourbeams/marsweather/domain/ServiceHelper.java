@@ -7,13 +7,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * The service helper is a common interface for upper layers to start the particular service
+ * The service helper is a common interface for upper layers to start the particular service.
+ * <br/>Method {@link #runService(task)} starts new service through sending intent
+ * <br/>and registers service as running at {@link #runningServicesPool}.
+ * <br/>The new service starts only in case it is not currently running (is not at {@link #runningServicesPool})
  */
 public class ServiceHelper {
 
     private final static ServiceHelper INSTANCE = new ServiceHelper();
     private static Context context;
     private Set <String> runningServicesPool = new HashSet <>();
+
+    private ServiceHelper(){}
 
     public enum task{
         GET_NEW_WEATHER_DATA_FROM_SERVER {
@@ -22,9 +27,8 @@ public class ServiceHelper {
                 return "GET_NEW_WEATHER_DATA_FROM_SERVER";
             }
         }
-    }
 
-    private ServiceHelper(){}
+    }
 
     public static ServiceHelper getInstance(Context context) {
         if (ServiceHelper.context == null) ServiceHelper.context = context;

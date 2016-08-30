@@ -11,6 +11,22 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.fourbeams.marsweather.domain.MyWidgetProvider;
 
+/**
+ * Provider stores Mars temperature data.
+ * <br/>Consists of SQLite database {@value #DATABASE_NAME} with table {@value #TABLE_NAME}
+ * <br/>including such fields, as: {@value #_ID}, {@value #TERRESTRIAL_DATE},
+ * {@value #MIN_TEMP_C}, {@value #MAX_TEMP_C}, {@value #SEASON}
+ * <p/>
+ * Provider could be accessed through the following URIs:
+ * <br/> content://{@value #PROVIDER_NAME}...
+ * <br/> <i>/temperature/last_date</i> - provides last date only, sortOrder and projection parameters allowed
+ * <br/> <i>/temperature</i> - provides data according with the given projection, selection, selectionArgs, and sortOrder param
+ * <p/>
+ * Method {@link #query} holds side effect of registering to watch a content URI for changes.
+ * <br/> {@link #delete}, {@link #update}, {@link #insert} methods notifies observers when content changed and
+ * <br/> sends intent (com.fourbeams.marsweather.intent.action.DATA_CHANGED_IN_PROVIDER)
+ * <br/> to let the widget be updated as well.
+ */
 @SuppressWarnings("ConstantConditions")
 public class MarsWeatherContentProvider extends ContentProvider {
 
@@ -113,19 +129,6 @@ public class MarsWeatherContentProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public String getType(@NonNull Uri uri) {
-        switch (uriMatcher.match(uri)){
-            case TEMPERATURE:
-                return "vnd.android.cursor.dir/vnd.com.fourbeams.marsweather.persistence.temperature";
-            case TEMPERATURE_LAST_DATE:
-                return "vnd.android.cursor.item/vnd.com.fourbeams.marsweather.persistence.temperature";
-            default:
-                throw new IllegalArgumentException("Unsupported URI: " + uri);
-        }
-    }
-
-    @Nullable
-    @Override
     public Uri insert(@NonNull Uri uri, ContentValues contentValues) {
         long rowID = db.insert(TABLE_NAME, "", contentValues);
         if (rowID > 0) {
@@ -165,6 +168,19 @@ public class MarsWeatherContentProvider extends ContentProvider {
         // notify widgets and observers
         notifyChange(uri);
         return count;
+    }
+
+    @Nullable
+    @Override
+    public String getType(@NonNull Uri uri) {
+        switch (uriMatcher.match(uri)){
+            case TEMPERATURE:
+                return "vnd.android.cursor.dir/vnd.com.fourbeams.marsweather.persistence.temperature";
+            case TEMPERATURE_LAST_DATE:
+                return "vnd.android.cursor.item/vnd.com.fourbeams.marsweather.persistence.temperature";
+            default:
+                throw new IllegalArgumentException("Unsupported URI: " + uri);
+        }
     }
 
     private void notifyChange(Uri uri){

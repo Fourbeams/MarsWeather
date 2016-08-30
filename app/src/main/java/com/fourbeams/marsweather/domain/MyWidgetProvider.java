@@ -17,6 +17,8 @@ import com.fourbeams.marsweather.R;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
 import com.fourbeams.marsweather.presentation.MainActivity;
 
+import java.util.Date;
+
 
 public class MyWidgetProvider extends AppWidgetProvider {
 
@@ -108,8 +110,9 @@ public class MyWidgetProvider extends AppWidgetProvider {
             remoteViews.setTextViewText(R.id.textView3, " " + String.valueOf(minTempCInContentProvider));
             remoteViews.setTextViewText(R.id.marsMonth, seasonInContentProvider);
             DateAndTimeUtil dateAndTimeUtil = DateAndTimeUtil.getInstance();
-            remoteViews.setTextViewText(R.id.marsTime, dateAndTimeUtil.getMarsTime());
-            remoteViews.setTextViewText(R.id.marsSol, "Sol " + dateAndTimeUtil.getMarsSol() + "  ");
+            Date date = new Date();
+            remoteViews.setTextViewText(R.id.marsTime, dateAndTimeUtil.timeConverterToMarsTime(date));
+            remoteViews.setTextViewText(R.id.marsSol, "Sol " + dateAndTimeUtil.calculateMarsSol(date) + "  ");
             for (int i = 0; i < appWidgetIds.length; i++) {
                 hideLoadingIndicator(remoteViews);
                 // 2 lines below fixes issue when periodically Android kills app's process

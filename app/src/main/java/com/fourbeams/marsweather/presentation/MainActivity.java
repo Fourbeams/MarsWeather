@@ -19,6 +19,8 @@ import com.fourbeams.marsweather.domain.Processor;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
 import com.fourbeams.marsweather.domain.ServiceHelper;
 
+import java.util.Date;
+
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks{
 
@@ -66,12 +68,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         marsWeatherContentProviderObserver = new MarsWeatherContentProviderObserver(new Handler());
         final DateAndTimeUtil dateAndTimeUtil = DateAndTimeUtil.getInstance();
         TextView sol = (TextView) findViewById(R.id.activityMarsSol);
-        sol.setText(" " + dateAndTimeUtil.getMarsSol() + "  ");
+        final Date date = new Date();
+        sol.setText(" " + dateAndTimeUtil.calculateMarsSol(date) + "  ");
 
         final TextView marsTimeView = (TextView) findViewById(R.id.marsTime);
         marsTimeView.post(new Runnable() {
             public void run() {
-                marsTimeView.setText(dateAndTimeUtil.getMarsTime());
+                marsTimeView.setText(dateAndTimeUtil.timeConverterToMarsTime(date));
             }
         });
         sysTimeChangeBroadcastReceiver = new BroadcastReceiver() {
@@ -81,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     final TextView marsTimeView = (TextView) findViewById(R.id.marsTime);
                     marsTimeView.post(new Runnable() {
                         public void run() {
-                            marsTimeView.setText(dateAndTimeUtil.getMarsTime());
+                            marsTimeView.setText(dateAndTimeUtil.timeConverterToMarsTime(date));
                         }
                     });
                 }
