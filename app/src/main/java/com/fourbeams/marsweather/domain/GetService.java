@@ -18,7 +18,7 @@ public class GetService extends IntentService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ServiceHelper.getInstance(getApplicationContext())
-                .removeServiceFromPool(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
+        ServiceFacade.getInstance(getApplicationContext())
+                .removeServiceFromPool(ServiceFacade.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
     }
 }

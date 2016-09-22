@@ -35,7 +35,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
             displayLoadingIndicator(remoteViews);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-            ServiceHelper.getInstance(context.getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
+            ServiceFacade.getInstance(context.getApplicationContext()).runService(ServiceFacade.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
         // if data changed at provider or processor responded with no data changes at content provider
@@ -51,7 +51,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
         Log.d ("TAG", "onUpdate called");
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
         // obtaining new data from server
-        ServiceHelper.getInstance(context).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
+        ServiceFacade.getInstance(context).runService(ServiceFacade.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
         for (int i = 0; i < appWidgetIds.length; i++) {
             displayLoadingIndicator(remoteViews);
             setOpenActivityWhenClicked(context, remoteViews); // open main activity when widget area clicked

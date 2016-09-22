@@ -17,7 +17,7 @@ import com.fourbeams.marsweather.R;
 import com.fourbeams.marsweather.domain.DateAndTimeUtil;
 import com.fourbeams.marsweather.domain.Processor;
 import com.fourbeams.marsweather.persistence.MarsWeatherContentProvider;
-import com.fourbeams.marsweather.domain.ServiceHelper;
+import com.fourbeams.marsweather.domain.ServiceFacade;
 
 import java.util.Date;
 
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onClick(View view) {
                 displayLoadingIndicator();
-                ServiceHelper.getInstance(getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
+                ServiceFacade.getInstance(getApplicationContext()).runService(ServiceFacade.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
             }
         });
 
@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         TextView sol = (TextView) findViewById(R.id.activityMarsSol);
         final Date date = new Date();
         sol.setText(" " + dateAndTimeUtil.calculateMarsSol(date) + "  ");
-
         final TextView marsTimeView = (TextView) findViewById(R.id.marsTime);
         marsTimeView.post(new Runnable() {
             public void run() {
@@ -91,6 +90,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         };
 
+
+
         registerReceiver(sysTimeChangeBroadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
         // registering receiver for incoming intents, that processor complete work with no new data inserted in to content provider
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         displayLoadingIndicator();
         //getLoaderManager().initLoader(TEMPERATURE_LOADER, null, this).forceLoad();
-        ServiceHelper.getInstance(getApplicationContext()).runService(ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
+        ServiceFacade.getInstance(getApplicationContext()).runService(ServiceFacade.task.GET_NEW_WEATHER_DATA_FROM_SERVER);
     }
 
     @Override

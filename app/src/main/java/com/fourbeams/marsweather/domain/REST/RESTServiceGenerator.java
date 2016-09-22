@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class RESTServiceGenerator {
 
-    private static final String API_BASE_URL = "http://marsweather.ingenology.com/";
+    private static final String API_BASE_URL = "http://cab.inta-csic.es/";
     private static final int CONNECT_TIMEOUT_SECONDS = 15;
     private static final int READ_TIMEOUT_SECONDS = 15;
 

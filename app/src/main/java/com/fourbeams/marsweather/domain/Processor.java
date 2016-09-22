@@ -25,13 +25,13 @@ public class Processor {
 
     /**
      * Starts processor to obtain data from server through REST Service.
-     * </br>If the is new data at server, then data is saved at content provider.
+     * </br>If there is new data at server, then data is saved at content provider.
      * </br>If there is NO new data, intent PROCESSOR_RESPONDED_WITH_NO_NEW_DATA_AT_SERVER is being sent.
      * </br>In case API is not available the exception is catched and it considered
      * as API is reachable, but no new data available.
      */
     void startGetProcessor(String task){
-        if (task.equals (ServiceHelper.task.GET_NEW_WEATHER_DATA_FROM_SERVER.toString())){
+        if (task.equals (ServiceFacade.task.GET_NEW_WEATHER_DATA_FROM_SERVER.toString())){
             try {
                 getNewWeatherData();
             } catch (IOException e) {
@@ -45,10 +45,12 @@ public class Processor {
         // Create a REST adapter which points Mars Weather API endpoint
         MarsWeatherService marsWeatherService = RESTServiceGenerator.createService(MarsWeatherService.class);
         // Fetch a list of the weather parameters
-        final Call<POJO.ReportResponse> call = marsWeatherService.getJSON();
+        final Call<POJO> call = marsWeatherService.getJSON();
         // Execute - this throws exception if API not available or it reached the timeout values
-        POJO.ReportResponse report = call.execute().body();
-        String terrestrialDate = report.getReport().getTerrestrialDate(); // date from server
+        POJO report = call.execute().body();
+        int arrayLenth = report.getSoles().size();
+        POJO.Sole lastElement = report.getSoles().get(0);
+        String terrestrialDate = lastElement.getTerrestrialDate(); // date from server
         // obtaining last date from content provider
         String latestDateInContentProvider = "";
         String URL = "content://" + MarsWeatherContentProvider.PROVIDER_NAME + "/temperature/last_date";
@@ -60,9 +62,9 @@ public class Processor {
         if (cursor != null) cursor.close();
         // if last date from server != last date in content provider, then insert new row
         if (!terrestrialDate.equals(latestDateInContentProvider)){
-            double minTemp = report.getReport().getMinTemp();
-            double maxTemp = report.getReport().getMaxTemp();
-            String season = report.getReport().getSeason();
+            double minTemp = Double.valueOf(lastElement.getMinTemp());
+            double maxTemp = Double.valueOf(lastElement.getMaxTemp());
+            String season = lastElement.getSeason();
             // saving result to contentProvider through contentResolver
             ContentValues contentValues = new ContentValues();
             contentValues.put(MarsWeatherContentProvider.TERRESTRIAL_DATE, terrestrialDate);

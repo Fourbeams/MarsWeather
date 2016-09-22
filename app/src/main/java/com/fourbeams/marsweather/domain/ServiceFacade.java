@@ -7,18 +7,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * The service helper is a common interface for upper layers to start the particular service.
+ * The service facade is a common interface for upper layers to start the particular service.
  * <br/>Method {@link #runService(task)} starts new service through sending intent
  * <br/>and registers service as running at {@link #runningServicesPool}.
  * <br/>The new service starts only in case it is not currently running (is not at {@link #runningServicesPool})
  */
-public class ServiceHelper {
+public class ServiceFacade {
 
-    private final static ServiceHelper INSTANCE = new ServiceHelper();
+    private final static ServiceFacade INSTANCE = new ServiceFacade();
     private static Context context;
     private Set <String> runningServicesPool = new HashSet <>();
 
-    private ServiceHelper(){}
+    private ServiceFacade(){}
 
     public enum task{
         GET_NEW_WEATHER_DATA_FROM_SERVER {
@@ -30,12 +30,12 @@ public class ServiceHelper {
 
     }
 
-    public static ServiceHelper getInstance(Context context) {
-        if (ServiceHelper.context == null) ServiceHelper.context = context;
+    public static ServiceFacade getInstance(Context context) {
+        if (ServiceFacade.context == null) ServiceFacade.context = context;
         return INSTANCE;
     }
 
-    public void runService (ServiceHelper.task task){
+    public void runService (ServiceFacade.task task){
         switch (task){
             case GET_NEW_WEATHER_DATA_FROM_SERVER: startGetService(task);
                 break;
