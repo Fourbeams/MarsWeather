@@ -63,7 +63,7 @@ public class MarsWeatherContentProvider extends ContentProvider {
     private SQLiteDatabase db;
     private static final String DATABASE_NAME = "MarsWeatherBD";
     private static final String TABLE_NAME = "temperature";
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
     private static final String CREATE_DB_TABLE =
         " CREATE TABLE " + TABLE_NAME +
         " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -71,7 +71,14 @@ public class MarsWeatherContentProvider extends ContentProvider {
         " min_temp_c DOUBLE NOT NULL, " +
         " max_temp_c DOUBLE NOT NULL, " +
         " season STRING NOT NULL); ";
-
+    private static final String INSERT_INITIAL_VALUES =
+            " INSERT INTO " + TABLE_NAME +
+                    " (" + TERRESTRIAL_DATE + ", " +
+                    MIN_TEMP_C + ", " +
+                    MAX_TEMP_C + ", " +
+                    SEASON + ") " +
+                    " VALUES " +
+                    " ('2016-10-05', '-70', '1', 'Month 8'); ";
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper(Context context){
@@ -81,6 +88,7 @@ public class MarsWeatherContentProvider extends ContentProvider {
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(CREATE_DB_TABLE);
+            db.execSQL(INSERT_INITIAL_VALUES);
         }
 
         @Override
